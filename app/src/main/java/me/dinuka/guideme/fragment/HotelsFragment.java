@@ -2,6 +2,7 @@ package me.dinuka.guideme.fragment;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -51,10 +52,27 @@ public class HotelsFragment extends Fragment {
         binding.nearHotelSection.hotelsSectionContainer.setLayoutManager(layoutManager);
 
         HotelListingAdapter adapter = new HotelListingAdapter(hotels, hotel -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("hotelName", hotel.getName());
+
+            HotelDetailsFragment fragment = new HotelDetailsFragment();
+            fragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
 
         });
 
         binding.nearHotelSection.hotelSectionTitle.setText("Near By Hotels");
         binding.nearHotelSection.hotelsSectionContainer.setAdapter(adapter);
+
+        getActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true){
+            @Override
+            public void handleOnBackPressed() {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 }
