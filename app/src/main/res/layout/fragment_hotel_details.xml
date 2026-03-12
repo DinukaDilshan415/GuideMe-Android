@@ -37,7 +37,6 @@
                     android:text="The Aston Vill Hotel The Aston Vill Hotel"
                     android:textSize="24sp"
                     android:textStyle="bold" />
-                />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -378,7 +377,7 @@ Couples in particular like the location – they rated it 9.4 for a two-person t
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnBooking"
+            android:id="@+id/reserveBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reserve" />

@@ -24,6 +24,7 @@ import java.util.List;
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.adapter.FacilityAdapter;
 import me.dinuka.guideme.adapter.ReviewListingAdapter;
+import me.dinuka.guideme.databinding.FragmentBookingOptionsPickBinding;
 import me.dinuka.guideme.databinding.FragmentHotelDetailsBinding;
 import me.dinuka.guideme.model.Facility;
 import me.dinuka.guideme.model.Review;
@@ -93,6 +94,15 @@ public class HotelDetailsFragment extends Fragment {
         });
 
         recyclerView1.setAdapter(reviewListingAdapter1);
+
+        binding.reserveBtn.setOnClickListener(v -> {
+            BookingOptionsPickFragment fragment = new BookingOptionsPickFragment();
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 
     @Override
