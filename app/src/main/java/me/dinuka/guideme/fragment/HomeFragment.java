@@ -100,24 +100,20 @@ public class HomeFragment extends Fragment {
     }
 
     private void createCategoryMenu() {
-        // 1. Prepare Data
         List<MenuCategory> categories = new ArrayList<>();
         categories.add(new MenuCategory(0, "Hotels", R.drawable.hotel_svgrepo_com));
         categories.add(new MenuCategory(1, "Things To Do", R.drawable.things_to_do));
         categories.add(new MenuCategory(2, "Services", R.drawable.service_svgrepo_com));
 
-        // 2. Setup RecyclerView
         RecyclerView recyclerView = binding.categoryMenuSection.categoryMenuContainer;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         MenuAdapter adapter = new MenuAdapter(categories, (item, position) -> {
-            // 3. Handle Fragment Switching
             loadFragment(item.getId());
         });
 
         recyclerView.setAdapter(adapter);
 
-        // Load default fragment
         loadFragment(0);
     }
 
