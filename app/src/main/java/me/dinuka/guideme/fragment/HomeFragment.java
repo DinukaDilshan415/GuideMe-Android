@@ -103,8 +103,8 @@ public class HomeFragment extends Fragment {
         // 1. Prepare Data
         List<MenuCategory> categories = new ArrayList<>();
         categories.add(new MenuCategory(0, "Hotels", R.drawable.hotel_svgrepo_com));
-        categories.add(new MenuCategory(1, "Things To Do", R.drawable.account_circle_24px));
-        categories.add(new MenuCategory(2, "Services", R.drawable.account_circle_24px));
+        categories.add(new MenuCategory(1, "Things To Do", R.drawable.things_to_do));
+        categories.add(new MenuCategory(2, "Services", R.drawable.service_svgrepo_com));
 
         // 2. Setup RecyclerView
         RecyclerView recyclerView = binding.categoryMenuSection.categoryMenuContainer;
