@@ -57,5 +57,12 @@ public class PartnerHomeFragment extends Fragment {
         });
 
         binding.partnerListingsRecyclerView.setAdapter(adapter);
+
+        binding.btnAddNewListing.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.partner_fragment_container, new ListingCategorySelectFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 }
