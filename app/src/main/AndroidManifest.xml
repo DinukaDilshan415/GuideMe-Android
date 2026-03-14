@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GuideMe">
         <activity
+            android:name=".activity.PartnerMainActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
