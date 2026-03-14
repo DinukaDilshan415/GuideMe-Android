@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/notifyImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/sample1"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                app:shapeAppearanceOverlay="@style/CircleImage"
+                android:background="@drawable/circle_shape" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:id="@+id/notifyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Guide Me "
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/notifyMsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Uncover the beauty diversity of Sri Lanka with a personalized, tailor-made itinerary - Flexible hours,"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/notifyTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2 hourse ago"
+                    android:textStyle="italic"
+                    android:layout_marginTop="2dp"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="?android:attr/listDivider" />
+
+    </LinearLayout>
+</RelativeLayout>
