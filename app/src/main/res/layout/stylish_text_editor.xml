@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/custom_input_search"
+        android:padding="8dp">
+
+        <HorizontalScrollView
+            android:background="#F5F5F5"
+            android:id="@+id/toolbar_scroll"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="4dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/action_undo"
+                    android:layout_height="48dp"
+                    android:layout_width="48dp"
+                    android:src="@drawable/baseline_undo_24" />
+
+                <ImageButton
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/action_redo"
+                    android:layout_height="48dp"
+                    android:layout_width="48dp"
+                    android:src="@drawable/baseline_redo_24" />
+
+                <View
+                    android:background="#DDD"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_width="1dp" />
+
+                <ImageButton
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/action_bold"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:src="@drawable/baseline_format_bold_24"
+                    />
+
+                <ImageButton
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/action_italic"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:src="@drawable/baseline_format_italic_24" />
+
+                <ImageButton
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/action_underline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:src="@drawable/baseline_format_underlined_24"/>
+
+                <ImageButton
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/action_heading1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:src="@drawable/format_h1_24px" />
+
+                <ImageButton
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/action_heading2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:src="@drawable/format_h2_24px" />
+
+                <ImageButton
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/action_insert_bullets"
+                    android:layout_height="48dp"
+                    android:layout_width="48dp"
+                    android:src="@drawable/format_list_bulleted_24px" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <View
+            android:background="#CCC"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <jp.wasabeef.richeditor.RichEditor
+            android:background="@android:color/white"
+            android:id="@+id/editor"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent" />
+
+        <View
+            android:background="#CCC"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>
