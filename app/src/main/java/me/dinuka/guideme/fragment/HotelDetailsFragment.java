@@ -61,11 +61,11 @@ public class HotelDetailsFragment extends Fragment {
         });
 
         List<Facility> facilities = new ArrayList<>();
-        facilities.add(new Facility(0, "Swimming Pool", R.drawable.pool_24px));
-        facilities.add(new Facility(1, "Gym", R.drawable.fitness_center_24px));
-        facilities.add(new Facility(2, "Spa", R.drawable.spa_24px));
-        facilities.add(new Facility(3, "Restaurant", R.drawable.restaurant_24px));
-        facilities.add(new Facility(4, "Bar", R.drawable.local_bar_24px));
+        facilities.add(new Facility(0, "Swimming Pool", R.drawable.pool_24px, false));
+        facilities.add(new Facility(1, "Gym", R.drawable.fitness_center_24px, false));
+        facilities.add(new Facility(2, "Spa", R.drawable.spa_24px, false));
+        facilities.add(new Facility(3, "Restaurant", R.drawable.restaurant_24px, false));
+        facilities.add(new Facility(4, "Bar", R.drawable.local_bar_24px, false));
 
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
 
