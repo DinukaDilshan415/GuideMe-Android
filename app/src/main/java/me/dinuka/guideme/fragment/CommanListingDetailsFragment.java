@@ -108,7 +108,20 @@ public class CommanListingDetailsFragment extends Fragment {
         });
 
         binding.nextFromCommanDetailBtn.setOnClickListener(v -> {
+            if (categoryName.equals("Hotels")){
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.partner_fragment_container, new HotelListingDetailsFragment())
+                        .addToBackStack(null)
+                        .commit();
+            } else if (categoryName.equals("Things To Do")){
 
+            } else if (categoryName.equals("Service")){
+
+            }
+        });
+
+        binding.backBtn.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
         });
 
     }

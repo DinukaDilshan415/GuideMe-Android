@@ -13,4 +13,5 @@ public class Facility {
     private int id;
     private String title;
     private int iconRes;
+    private boolean isSelected;
 }
