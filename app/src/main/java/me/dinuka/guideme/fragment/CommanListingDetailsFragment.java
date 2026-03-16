@@ -114,9 +114,15 @@ public class CommanListingDetailsFragment extends Fragment {
                         .addToBackStack(null)
                         .commit();
             } else if (categoryName.equals("Things To Do")){
-
-            } else if (categoryName.equals("Service")){
-
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.partner_fragment_container, new ThingsToDoListingDetailsFragment())
+                        .addToBackStack(null)
+                        .commit();
+            } else if (categoryName.equals("Services")){
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.partner_fragment_container, new ServiceListingDetailsFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
