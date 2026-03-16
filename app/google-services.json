@@ -12,7 +12,20 @@
           "package_name": "me.dinuka.guideme"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "904896597419-8t12b561h0r9fqs8hm69d48s6dl89pdm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.dinuka.guideme",
+            "certificate_hash": "4e61d6aaf1502cf95cd1f9fe3b5a2dbf95cc810d"
+          }
+        },
+        {
+          "client_id": "904896597419-jf6077q5tgdeo5517erilsdeh40v9tri.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA_FgVvZ3cW_yuP2LNnKDzq1bTqUinJznI"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "904896597419-jf6077q5tgdeo5517erilsdeh40v9tri.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
