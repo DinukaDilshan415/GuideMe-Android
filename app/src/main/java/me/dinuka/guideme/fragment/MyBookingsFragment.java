@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,8 @@ import me.dinuka.guideme.model.MyBooking;
 public class MyBookingsFragment extends Fragment {
 
     private FragmentMyBookingsBinding binding;
+
+    private FirebaseAuth auth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,16 @@ public class MyBookingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        auth = FirebaseAuth.getInstance();
+
+        if (auth.getCurrentUser() != null){
+            binding.myBookingsLoggedDesign.setVisibility(View.VISIBLE);
+            binding.myBookingsNotLoggedDesign.setVisibility(View.GONE);
+        } else {
+            binding.myBookingsLoggedDesign.setVisibility(View.GONE);
+            binding.myBookingsNotLoggedDesign.setVisibility(View.VISIBLE);
+        }
 
         List<MyBooking> myBookings = new ArrayList<>();
         myBookings.add(new MyBooking("#38472384","Room in boutique hotel in Ahangama",45,"Ahangama West, Sri Lanka",4.5,"https://a0.muscache.com/im/pictures/hosting/Hosting-1616481404202153296/original/c8166786-ba76-4847-b7bf-e40af1e50562.jpeg?im_w=1200","3/20/2026","3/20/2026",2,1,"3/20/2026 8:09AM"));
