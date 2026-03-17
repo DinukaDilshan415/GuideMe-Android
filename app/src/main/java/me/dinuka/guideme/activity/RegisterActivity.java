@@ -2,6 +2,7 @@ package me.dinuka.guideme.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import me.dinuka.guideme.R;
@@ -42,6 +44,12 @@ public class RegisterActivity extends AppCompatActivity {
             finish();
         });
 
+        binding.switchToPartnerRegisterBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, PartnerRegisterActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -51,80 +59,97 @@ public class RegisterActivity extends AppCompatActivity {
             String password = binding.inputRegisterPassword.getText().toString().trim();
             String reTypePassword = binding.inputRegisterReTypePassword.getText().toString().trim();
 
-            if(name.isEmpty()){
+            if (name.isEmpty()) {
                 binding.inputRegisterName.setError("Name is required");
                 binding.inputRegisterName.requestFocus();
                 return;
             }
 
-            if(email.isEmpty()){
+            if (email.isEmpty()) {
                 binding.inputRegisterEmail.setError("Email is required");
                 binding.inputRegisterEmail.requestFocus();
                 return;
             }
 
-            if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 binding.inputRegisterEmail.setError("Please provide a valid email");
                 binding.inputRegisterEmail.requestFocus();
                 return;
             }
 
-            if(password.isEmpty()){
+            if (password.isEmpty()) {
                 binding.inputRegisterPassword.setError("Password is required");
                 binding.inputRegisterPassword.requestFocus();
                 return;
             }
 
-            if(!RegexValidator.isValidPassword(password)){
+            if (!RegexValidator.isValidPassword(password)) {
                 binding.inputRegisterPassword.setError("The password must contain at least 8 characters, lowercase letter, uppercase letter, digit, and special character");
                 binding.inputRegisterPassword.requestFocus();
                 return;
             }
 
-            if(reTypePassword.isEmpty()){
+            if (reTypePassword.isEmpty()) {
                 binding.inputRegisterReTypePassword.setError("Retype password is required");
                 binding.inputRegisterReTypePassword.requestFocus();
                 return;
             }
 
-            if(!reTypePassword.equals(password)){
+            if (!reTypePassword.equals(password)) {
                 binding.inputRegisterReTypePassword.setError("Retype password does not match with password");
                 binding.inputRegisterReTypePassword.requestFocus();
                 return;
             }
 
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                String uid = task.getResult().getUser().getUid();
-                                User user = User.builder()
-                                        .uid(uid)
-                                        .name(name)
-                                        .email(email)
-                                        .build();
-                                firebaseFirestore.collection("users")
-                                        .document(uid)
-                                        .set(user)
-                                        .addOnSuccessListener(aVoid -> {
-                                            new Sweetalert(RegisterActivity.this, Sweetalert.SUCCESS_TYPE)
-                                                    .setTitleText("Success")
-                                                    .setContentText("YUser registered successfully")
-                                                    .show();
+            firebaseFirestore.collection("partners")
+                    .whereEqualTo("email", email)
+                    .get()
+                    .addOnSuccessListener(ds -> {
+                        if (!ds.isEmpty()) {
+                            binding.inputRegisterEmail.setError("This Email Already Registered. Try Another Email");
+                            binding.inputRegisterEmail.requestFocus();
+                        } else {
+                            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                String uid = task.getResult().getUser().getUid();
+                                                User user = User.builder()
+                                                        .uid(uid)
+                                                        .name(name)
+                                                        .email(email)
+                                                        .build();
+                                                firebaseFirestore.collection("users")
+                                                        .document(uid)
+                                                        .set(user)
+                                                        .addOnSuccessListener(aVoid -> {
+                                                            new Sweetalert(RegisterActivity.this, Sweetalert.SUCCESS_TYPE)
+                                                                    .setTitleText("Success")
+                                                                    .setContentText("User registered successfully")
+                                                                    .show();
 
-                                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        });
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                                                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        });
+                                            } else {
+                                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                                    binding.inputRegisterEmail.setError("This Email Already Registered. Try Another Email");
+                                                    binding.inputRegisterEmail.requestFocus();
+                                                } else {
+                                                    Log.e("AuthError", task.getException().getMessage());
+                                                }
+                                            }
+                                        }
+                                    });
                         }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("RegisterActivity", "Error getting users", e);
                     });
         });
     }

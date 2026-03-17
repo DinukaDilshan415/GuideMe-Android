@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textAlignment="center"
-        android:text="Regiater as a GuideMe Member"
+        android:text="Register as a GuideMe Member"
         android:textStyle="bold"
         android:textColor="@color/md_theme_secondary"
         android:textSize="16sp"
@@ -181,6 +181,7 @@
         >
 
         <TextView
+            android:id="@+id/switchToPartnerRegisterBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GuideMe">
         <activity
+            android:name=".activity.PartnerRegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PartnerLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.RegisterActivity"
             android:exported="false" />
         <activity

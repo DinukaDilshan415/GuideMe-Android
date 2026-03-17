@@ -41,10 +41,13 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/profileDisplayLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/profileImage"
@@ -96,10 +99,38 @@
 
             </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/profileLoginBtnLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Log in and start exploring"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/loginregisterBtn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:text="Log In or Register"
+                android:backgroundTint="@color/md_theme_secondary"
+                android:textSize="16sp"
+                app:cornerRadius="10dp"
+                />
+
+        </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginVertical="18dp"
+                android:layout_marginVertical="10dp"
                 android:background="?android:attr/listDivider" />
 
             <LinearLayout
@@ -243,7 +274,9 @@
                 android:backgroundTint="#b3000e"
                 android:layout_gravity="center"
                 android:layout_alignParentBottom="true"
-                android:text="Log Out" />
+                android:text="Log Out"
+                android:visibility="gone"
+                />
         </LinearLayout>
 
 

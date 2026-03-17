@@ -60,6 +60,11 @@ public class ProfileFragment extends Fragment {
             openDialog();
         });
 
+        binding.loginregisterBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+        });
+
         getParentFragmentManager().setFragmentResultListener("requestKey", getViewLifecycleOwner(), (requestKey, bundle) -> {
             String imageUriString = bundle.getString("bundleKey");
             if (imageUriString != null) {
@@ -67,6 +72,16 @@ public class ProfileFragment extends Fragment {
                 binding.profileImage.setImageURI(imageUri);
             }
         });
+
+        if (mAuth.getCurrentUser() != null){
+            binding.profileLoginBtnLayout.setVisibility(View.GONE);
+            binding.profileDisplayLayout.setVisibility(View.VISIBLE);
+            binding.logoutBtn.setVisibility(View.VISIBLE);
+        } else {
+            binding.profileLoginBtnLayout.setVisibility(View.VISIBLE);
+            binding.profileDisplayLayout.setVisibility(View.GONE);
+            binding.logoutBtn.setVisibility(View.GONE);
+        }
     }
 
     private void openDialog() {

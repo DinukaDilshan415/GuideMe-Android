@@ -27,11 +27,14 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.databinding.ActivityLoginBinding;
+import me.dinuka.guideme.model.User;
 import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class LoginActivity extends AppCompatActivity {
@@ -39,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     CredentialManager credentialManager = CredentialManager.create(this);
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
     GetCredentialRequest request;
 
     @Override
@@ -48,9 +52,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         binding.gotoRegisterBtn.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+        binding.switchToPartnerLoginBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, PartnerLoginActivity.class);
             startActivity(intent);
             finish();
         });
@@ -72,40 +83,57 @@ public class LoginActivity extends AppCompatActivity {
             String email = binding.inputLoginEmail.getText().toString().trim();
             String password = binding.inputLoginPassword.getText().toString().trim();
 
-            if (email.isEmpty()){
+            if (email.isEmpty()) {
                 binding.inputLoginEmail.setError("Email is required");
                 binding.inputLoginEmail.requestFocus();
                 return;
             }
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 binding.inputLoginEmail.setError("Please provide a valid email");
                 binding.inputLoginEmail.requestFocus();
                 return;
             }
 
-            if (password.isEmpty()){
+            if (password.isEmpty()) {
                 binding.inputLoginPassword.setError("Password is required");
                 binding.inputLoginPassword.requestFocus();
                 return;
             }
 
-            firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task){
-                            if (task.isSuccessful()){
-                                updateUI(firebaseAuth.getCurrentUser());
-                            } else {
-                                new Sweetalert(LoginActivity.this, Sweetalert.WARNING_TYPE)
-                                        .setTitleText("Warning")
-                                        .setContentText("Incorrect Email Or Passowrd")
-                                        .show();
+            firebaseFirestore.collection("users")
+                    .whereEqualTo("email", email)
+                    .get()
+                    .addOnSuccessListener(ds -> {
+                        if (!ds.isEmpty()) {
+                            firebaseAuth.signInWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                updateUI(firebaseAuth.getCurrentUser());
+                                            } else {
+                                                new Sweetalert(LoginActivity.this, Sweetalert.WARNING_TYPE)
+                                                        .setTitleText("Warning")
+                                                        .setContentText("Incorrect Email Or Passowrd")
+                                                        .show();
 //                                Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
 //                                updateUI(null);
-                            }
+                                            }
+                                        }
+                                    });
+                        } else {
+                            new Sweetalert(LoginActivity.this, Sweetalert.WARNING_TYPE)
+                                    .setTitleText("Warning")
+                                    .setContentText("Incorrect Email Or Passowrd. Try Again")
+                                    .show();
                         }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("LoginActivity", "Error getting users", e);
                     });
+
+
         });
 
     }
