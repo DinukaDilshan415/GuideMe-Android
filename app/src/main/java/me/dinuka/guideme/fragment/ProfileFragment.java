@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         binding.editBtn1.setOnClickListener(v -> {
-            EditProfileSheet editProfileSheet = new EditProfileSheet();
+            EditProfileSheet editProfileSheet = new EditProfileSheet("user");
 
             editProfileSheet.show(getParentFragmentManager(), "EditProfileTag");
         });
