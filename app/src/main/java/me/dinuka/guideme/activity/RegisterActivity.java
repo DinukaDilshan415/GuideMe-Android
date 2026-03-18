@@ -20,10 +20,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+
 import me.dinuka.guideme.R;
+import me.dinuka.guideme.api.PartnerApi;
+import me.dinuka.guideme.api.UserApi;
+import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.ActivityRegisterBinding;
+import me.dinuka.guideme.dto.PartnerDTO;
+import me.dinuka.guideme.dto.UserDTO;
 import me.dinuka.guideme.model.User;
 import me.dinuka.guideme.util.RegexValidator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -124,6 +135,10 @@ public class RegisterActivity extends AppCompatActivity {
                                                         .document(uid)
                                                         .set(user)
                                                         .addOnSuccessListener(aVoid -> {
+
+                                                            //store in mysql db
+                                                            storeUserDataInDb(name, email);
+
                                                             new Sweetalert(RegisterActivity.this, Sweetalert.SUCCESS_TYPE)
                                                                     .setTitleText("Success")
                                                                     .setContentText("User registered successfully")
@@ -151,6 +166,41 @@ public class RegisterActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         Log.e("RegisterActivity", "Error getting users", e);
                     });
+        });
+    }
+
+    private void storeUserDataInDb(String name, String email) {
+        Retrofit instance = RetrofitClient.getInstance(this);
+
+        UserApi userApi = instance.create(UserApi.class);
+
+        UserDTO dto = UserDTO.builder()
+                .name(name)
+                .email(email)
+                .mobile("empty")
+                .otp("empty")
+                .imageUrl("empty")
+                .statusId(1)
+                .build();
+
+        Call<HashMap<String, Object>> userDTOCall = userApi.userRegister(dto);
+
+        userDTOCall.enqueue(new Callback<HashMap<String, Object>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
+
+                if (response.isSuccessful()) {
+                    HashMap<String, Object> responseBody = response.body();
+                    Log.d("RegisterActivity", "Response: " + responseBody.get("message"));
+                } else {
+                    Log.e("RegisterActivity", "Error: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, Object>> call, Throwable t) {
+                Log.e("RegisterActivity", "Error: " + t.getMessage());
+            }
         });
     }
 }
