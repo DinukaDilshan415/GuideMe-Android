@@ -17,8 +17,8 @@ public class UserDTO {
     private String email;
     private String mobile;
     private String otp;
-    private Date created_at;
-    private Date updated_at;
-    private String image_url;
-    private int status_id;
+    private Date createdAt;
+    private Date updatedAt;
+    private String imageUrl;
+    private int statusId;
 }
