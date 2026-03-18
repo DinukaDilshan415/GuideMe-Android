@@ -12,6 +12,7 @@ import androidx.credentials.CredentialManager;
 import androidx.credentials.CredentialManagerCallback;
 import androidx.credentials.exceptions.ClearCredentialException;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.os.CancellationSignal;
 import android.util.Log;
@@ -19,20 +20,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.activity.LoginActivity;
 import me.dinuka.guideme.activity.PartnerLoginActivity;
+import me.dinuka.guideme.adapter.FacilitySelectAdapter;
+import me.dinuka.guideme.api.FacilityApi;
+import me.dinuka.guideme.api.PartnerApi;
+import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.FragmentPartnerProfileBinding;
 import me.dinuka.guideme.databinding.FragmentProfileBinding;
+import me.dinuka.guideme.dto.FacilityDTO;
+import me.dinuka.guideme.dto.PartnerDTO;
+import me.dinuka.guideme.model.Facility;
+import me.dinuka.guideme.model.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class PartnerProfileFragment extends Fragment {
 
     private FragmentPartnerProfileBinding binding;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private PartnerDTO currentPartner;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,9 +71,12 @@ public class PartnerProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         binding.editBtn1.setOnClickListener(v -> {
-            EditProfileSheet editProfileSheet = new EditProfileSheet();
+            EditProfileSheet editProfileSheet = new EditProfileSheet("partner");
 
             editProfileSheet.show(getParentFragmentManager(), "EditProfileTag");
         });
@@ -68,21 +92,91 @@ public class PartnerProfileFragment extends Fragment {
 
         getParentFragmentManager().setFragmentResultListener("requestKey", getViewLifecycleOwner(), (requestKey, bundle) -> {
             String imageUriString = bundle.getString("bundleKey");
+            String updatedName = bundle.getString("updatedName");
+
+            binding.currentUserName.setText(updatedName);
+
             if (imageUriString != null) {
                 Uri imageUri = Uri.parse(imageUriString);
                 binding.profileImage.setImageURI(imageUri);
             }
         });
 
-        if (mAuth.getCurrentUser() != null){
+        if (currentUser != null) {
             binding.partnerProfileLoginBtnLayout.setVisibility(View.GONE);
             binding.partnerProfileDisplayLayout.setVisibility(View.VISIBLE);
             binding.logoutBtn.setVisibility(View.VISIBLE);
+
+            String uid = currentUser.getUid();
+            firebaseFirestore.collection("partners")
+                    .document(uid)
+                    .get()
+                    .addOnSuccessListener(ds -> {
+                        if (ds.exists()) {
+                            User user = ds.toObject(User.class);
+                            binding.currentUserName.setText(user.getName());
+
+                            if (user.getProfilePicUrl() != null) {
+                                FirebaseStorage storage = FirebaseStorage.getInstance();
+                                storage.getReference("profile-images/" + user.getProfilePicUrl()).getDownloadUrl()
+                                        .addOnSuccessListener(uri -> {
+
+                                            Glide.with(PartnerProfileFragment.this)
+                                                    .load(uri)
+                                                    .circleCrop()
+                                                    .into(binding.profileImage);
+
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("PartnerProfileFragment", "Error getting image URL", e);
+                                        });
+                            }
+
+                            loadCurrentData(user.getEmail());
+
+                        } else {
+                            Log.e("PartnerProfileFragment", "User data not found");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("PartnerProfileFragment", "Error getting user data", e);
+                    });
+
         } else {
             binding.partnerProfileLoginBtnLayout.setVisibility(View.VISIBLE);
             binding.partnerProfileDisplayLayout.setVisibility(View.GONE);
             binding.logoutBtn.setVisibility(View.GONE);
         }
+    }
+
+    private boolean loadCurrentData(String email) {
+
+        final boolean[] isHavePartner = {false};
+
+        Retrofit retrofit = RetrofitClient.getInstance(getContext());
+        PartnerApi partnerApi = retrofit.create(PartnerApi.class);
+
+        Call<PartnerDTO> currentPartnerCall = partnerApi.getCurrentPartner(email);
+        currentPartnerCall.enqueue(new Callback<PartnerDTO>() {
+            @Override
+            public void onResponse(Call<PartnerDTO> call, Response<PartnerDTO> response) {
+                if (response.isSuccessful()) {
+                    currentPartner = response.body();
+
+                    binding.partnerFrom.setText("Partner from : " + currentPartner.getCreatedAt());
+
+                    isHavePartner[0] = true;
+                } else {
+                    Log.e("PartnerProfileFragment", "Error fetching : " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PartnerDTO> call, Throwable t) {
+                Log.e("PartnerProfileFragment", "Error fetching : ", t);
+            }
+        });
+        return isHavePartner[0];
     }
 
     private void openDialog() {
@@ -107,7 +201,7 @@ public class PartnerProfileFragment extends Fragment {
         alertDialog.show();
     }
 
-    private void logout(){
+    private void logout() {
         mAuth.signOut();
 
         CredentialManager credentialManager = CredentialManager.create(getContext());
