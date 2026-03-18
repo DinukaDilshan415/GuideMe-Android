@@ -21,12 +21,23 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import me.dinuka.guideme.R;
+import me.dinuka.guideme.api.PartnerApi;
+import me.dinuka.guideme.api.UserApi;
+import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.ActivityPartnerRegisterBinding;
+import me.dinuka.guideme.dto.PartnerDTO;
+import me.dinuka.guideme.dto.UserDTO;
 import me.dinuka.guideme.model.User;
 import me.dinuka.guideme.util.RegexValidator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class PartnerRegisterActivity extends AppCompatActivity {
@@ -128,6 +139,10 @@ public class PartnerRegisterActivity extends AppCompatActivity {
                                                         .document(uid)
                                                         .set(user)
                                                         .addOnSuccessListener(aVoid -> {
+
+                                                            //store in mysql db
+                                                            storePartnerDataInDb(name, email);
+
                                                             new Sweetalert(PartnerRegisterActivity.this, Sweetalert.SUCCESS_TYPE)
                                                                     .setTitleText("Success")
                                                                     .setContentText("Partner registered successfully")
@@ -157,6 +172,42 @@ public class PartnerRegisterActivity extends AppCompatActivity {
                     });
 
 
+        });
+    }
+
+    private void storePartnerDataInDb(String name, String email) {
+        Retrofit instance = RetrofitClient.getInstance(this);
+
+        PartnerApi partnerApi = instance.create(PartnerApi.class);
+
+        PartnerDTO dto = PartnerDTO.builder()
+                .name(name)
+                .email(email)
+                .mobile("empty")
+                .otp("empty")
+                .imageUrl("empty")
+                .partnerTypeId(1)
+                .statusId(1)
+                .build();
+
+        Call<HashMap<String, Object>> partnerDTOCall = partnerApi.partnerRegister(dto);
+
+        partnerDTOCall.enqueue(new Callback<HashMap<String, Object>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
+
+                if (response.isSuccessful()) {
+                    HashMap<String, Object> responseBody = response.body();
+                    Log.d("PartnerRegisterActivity", "Response: " + responseBody.get("message"));
+                } else {
+                    Log.e("PartnerRegisterActivity", "Error: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, Object>> call, Throwable t) {
+                Log.e("PartnerRegisterActivity", "Error: " + t.getMessage());
+            }
         });
     }
 }
