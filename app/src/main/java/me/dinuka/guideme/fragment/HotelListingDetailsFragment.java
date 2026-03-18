@@ -22,8 +22,15 @@ import me.dinuka.guideme.R;
 import me.dinuka.guideme.adapter.FacilityAdapter;
 import me.dinuka.guideme.adapter.FacilitySelectAdapter;
 import me.dinuka.guideme.adapter.RoomTypeAdapter;
+import me.dinuka.guideme.api.FacilityApi;
+import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.FragmentHotelListingDetailsBinding;
+import me.dinuka.guideme.dto.FacilityDTO;
 import me.dinuka.guideme.model.Facility;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class HotelListingDetailsFragment extends Fragment {
 
@@ -32,9 +39,10 @@ public class HotelListingDetailsFragment extends Fragment {
     private RoomTypeAdapter roomAdapter;
     private RecyclerView rvRoomTypes;
     private EditText etRoomInput;
-
     private int roomCount = 1;
     private int adultCount = 1;
+    List<Facility> facilityList;
+    private List<FacilityDTO> facilityDTOS;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,8 @@ public class HotelListingDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupCounters();
+
+        facilityList = new ArrayList<>();
 
         binding.facilitySelectContainer.setOnClickListener(v -> {
             if (binding.facilitySelectRecyclerView.getVisibility() == View.GONE) {
@@ -81,17 +91,7 @@ public class HotelListingDetailsFragment extends Fragment {
             }
         });
 
-        List<Facility> facilityList = new ArrayList<>();
-        facilityList.add(new Facility(0, "Swimming Pool", R.drawable.pool_24px, false));
-        facilityList.add(new Facility(1, "Gym", R.drawable.fitness_center_24px, false));
-        facilityList.add(new Facility(2, "Spa", R.drawable.spa_24px, false));
-        facilityList.add(new Facility(3, "Restaurant", R.drawable.restaurant_24px, false));
-        facilityList.add(new Facility(4, "Bar", R.drawable.local_bar_24px, false));
-
-        FacilitySelectAdapter adapter = new FacilitySelectAdapter(facilityList);
-        binding.facilitySelectRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        binding.facilitySelectRecyclerView.setAdapter(adapter);
-
+        loadFacilities();
 
         binding.nextFromHotelDetailBtn.setOnClickListener(v -> {
             ArrayList<String> selected = new ArrayList<>();
@@ -103,6 +103,45 @@ public class HotelListingDetailsFragment extends Fragment {
                 Log.d("SELECTED", s);
             }
         });
+    }
+
+    private void loadFacilities() {
+        Retrofit retrofit = RetrofitClient.getInstance(getContext());
+        FacilityApi facilityApi = retrofit.create(FacilityApi.class);
+        Call<List<FacilityDTO>> listCall = facilityApi.getAllFacilities();
+        listCall.enqueue(new Callback<List<FacilityDTO>>() {
+            @Override
+            public void onResponse(Call<List<FacilityDTO>> call, Response<List<FacilityDTO>> response) {
+                if (response.isSuccessful()) {
+                    facilityDTOS = response.body();
+                    for (FacilityDTO f : facilityDTOS) {
+                        String resourceName = f.getIcon();
+                        String entryName = resourceName.substring(resourceName.lastIndexOf('.') + 1);
+
+                        int resId = getResources().getIdentifier(entryName, "drawable", getContext().getPackageName());
+
+                        if (resId != 0) {
+                            facilityList.add(new Facility(f.getId(), f.getType(), resId, false));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FacilityDTO>> call, Throwable t) {
+                Log.e("HotelListingDetailsFragment", "Error fetching facilities", t);
+            }
+        });
+
+//        facilityList.add(new Facility(0, "Swimming Pool", R.drawable.pool_24px, false));
+//        facilityList.add(new Facility(1, "Gym", R.drawable.fitness_center_24px, false));
+//        facilityList.add(new Facility(2, "Spa", R.drawable.spa_24px, false));
+//        facilityList.add(new Facility(3, "Restaurant", R.drawable.restaurant_24px, false));
+//        facilityList.add(new Facility(4, "Bar", R.drawable.local_bar_24px, false));
+
+        FacilitySelectAdapter adapter = new FacilitySelectAdapter(facilityList);
+        binding.facilitySelectRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.facilitySelectRecyclerView.setAdapter(adapter);
     }
 
     public void updateRoomVisibility() {
