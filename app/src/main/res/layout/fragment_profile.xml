@@ -67,16 +67,18 @@
                     android:layout_marginStart="8dp">
 
                     <TextView
+                        android:id="@+id/currentUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Dinuka Dilshan"
+                        android:text="Loading..."
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/memberFrom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Member from : 2034-03-22"
+                        android:text="Member from : Loading..."
                         android:textSize="14sp" />
                 </LinearLayout>
 
