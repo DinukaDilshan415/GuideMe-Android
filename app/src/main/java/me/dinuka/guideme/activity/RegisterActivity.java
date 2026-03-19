@@ -180,6 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .mobile("empty")
                 .otp("empty")
                 .imageUrl("empty")
+                .country("empty")
                 .statusId(1)
                 .build();
 

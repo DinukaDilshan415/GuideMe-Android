@@ -186,6 +186,7 @@ public class PartnerRegisterActivity extends AppCompatActivity {
                 .mobile("empty")
                 .otp("empty")
                 .imageUrl("empty")
+                .country("empty")
                 .partnerTypeId(1)
                 .statusId(1)
                 .build();

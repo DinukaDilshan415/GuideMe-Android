@@ -90,6 +90,13 @@ public class PartnerProfileFragment extends Fragment {
             startActivity(intent);
         });
 
+        binding.personalDetailsLayout.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.partner_fragment_container, new PartnerPersonalDetailsFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         getParentFragmentManager().setFragmentResultListener("requestKey", getViewLifecycleOwner(), (requestKey, bundle) -> {
             String imageUriString = bundle.getString("bundleKey");
             String updatedName = bundle.getString("updatedName");
@@ -106,6 +113,7 @@ public class PartnerProfileFragment extends Fragment {
             binding.partnerProfileLoginBtnLayout.setVisibility(View.GONE);
             binding.partnerProfileDisplayLayout.setVisibility(View.VISIBLE);
             binding.logoutBtn.setVisibility(View.VISIBLE);
+            binding.personalDetailsLayout.setVisibility(View.VISIBLE);
 
             String uid = currentUser.getUid();
             firebaseFirestore.collection("partners")
@@ -146,6 +154,7 @@ public class PartnerProfileFragment extends Fragment {
             binding.partnerProfileLoginBtnLayout.setVisibility(View.VISIBLE);
             binding.partnerProfileDisplayLayout.setVisibility(View.GONE);
             binding.logoutBtn.setVisibility(View.GONE);
+            binding.personalDetailsLayout.setVisibility(View.GONE);
         }
     }
 

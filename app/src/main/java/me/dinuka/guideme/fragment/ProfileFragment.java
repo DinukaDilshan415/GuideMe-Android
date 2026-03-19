@@ -100,6 +100,7 @@ public class ProfileFragment extends Fragment {
             binding.profileLoginBtnLayout.setVisibility(View.GONE);
             binding.profileDisplayLayout.setVisibility(View.VISIBLE);
             binding.logoutBtn.setVisibility(View.VISIBLE);
+            binding.personalDetailsLayout.setVisibility(View.VISIBLE);
 
             String uid = currentUser.getUid();
             firebaseFirestore.collection("users")
@@ -140,6 +141,7 @@ public class ProfileFragment extends Fragment {
             binding.profileLoginBtnLayout.setVisibility(View.VISIBLE);
             binding.profileDisplayLayout.setVisibility(View.GONE);
             binding.logoutBtn.setVisibility(View.GONE);
+            binding.personalDetailsLayout.setVisibility(View.GONE);
         }
     }
 
