@@ -24,6 +24,9 @@ public interface PartnerApi {
     @PUT("partner/updatemobile")
     Call<HashMap<String, Object>> partnerUpdateMobile(@Body PartnerDTO partnerDTO);
 
+    @PUT("partner/updatenameandimage")
+    Call<HashMap<String, Object>> partnerUpdateNameAndImage(@Body PartnerDTO partnerDTO);
+
     @PUT("partner/updatecountry")
     Call<HashMap<String, Object>> partnerUpdateContry(@Body PartnerDTO partnerDTO);
 
