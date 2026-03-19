@@ -74,7 +74,7 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        firebaseFirestore.collection("partners")
+        firebaseFirestore.collection(ui)
                 .document(firebaseAuth.getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(ds -> {
@@ -109,8 +109,7 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
             if (selectedUri != null) {
-                if (ui.equals("partner")) {
-
+                if (ui.equals("partners")) {
                     StorageReference imageReference = storage.getReference("profile-images")
                             .child(fileName);
                     imageReference.putFile(selectedUri)
@@ -122,11 +121,20 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
                                             Log.d("EditProfileSheet", "Profile picture updated successfully");
                                         });
                             });
-
-                    result.putString("bundleKey", selectedUri.toString());
-                } else {
-
+                } else if (ui.equals("users")) {
+                    StorageReference imageReference = storage.getReference("profile-images")
+                            .child(fileName);
+                    imageReference.putFile(selectedUri)
+                            .addOnSuccessListener(taskSnapshot -> {
+                                firebaseFirestore.collection("users")
+                                        .document(firebaseAuth.getCurrentUser().getUid())
+                                        .update("profilePicUrl", fileName)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Log.d("EditProfileSheet", "Profile picture updated successfully");
+                                        });
+                            });
                 }
+                result.putString("bundleKey", selectedUri.toString());
             }
 
             result.putString("updatedName", name);

@@ -76,7 +76,7 @@ public class PartnerProfileFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         binding.editBtn1.setOnClickListener(v -> {
-            EditProfileSheet editProfileSheet = new EditProfileSheet("partner");
+            EditProfileSheet editProfileSheet = new EditProfileSheet("partners");
 
             editProfileSheet.show(getParentFragmentManager(), "EditProfileTag");
         });

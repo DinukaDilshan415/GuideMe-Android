@@ -20,18 +20,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.concurrent.Executors;
 
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.activity.LoginActivity;
+import me.dinuka.guideme.api.PartnerApi;
+import me.dinuka.guideme.api.UserApi;
+import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.FragmentProfileBinding;
+import me.dinuka.guideme.dto.PartnerDTO;
+import me.dinuka.guideme.dto.UserDTO;
+import me.dinuka.guideme.model.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private UserDTO currentUserDTO;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,9 +65,12 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         binding.editBtn1.setOnClickListener(v -> {
-            EditProfileSheet editProfileSheet = new EditProfileSheet("user");
+            EditProfileSheet editProfileSheet = new EditProfileSheet("users");
 
             editProfileSheet.show(getParentFragmentManager(), "EditProfileTag");
         });
@@ -67,21 +86,91 @@ public class ProfileFragment extends Fragment {
 
         getParentFragmentManager().setFragmentResultListener("requestKey", getViewLifecycleOwner(), (requestKey, bundle) -> {
             String imageUriString = bundle.getString("bundleKey");
+            String updatedName = bundle.getString("updatedName");
+
+            binding.currentUserName.setText(updatedName);
+
             if (imageUriString != null) {
                 Uri imageUri = Uri.parse(imageUriString);
                 binding.profileImage.setImageURI(imageUri);
             }
         });
 
-        if (mAuth.getCurrentUser() != null){
+        if (currentUser != null){
             binding.profileLoginBtnLayout.setVisibility(View.GONE);
             binding.profileDisplayLayout.setVisibility(View.VISIBLE);
             binding.logoutBtn.setVisibility(View.VISIBLE);
+
+            String uid = currentUser.getUid();
+            firebaseFirestore.collection("users")
+                    .document(uid)
+                    .get()
+                    .addOnSuccessListener(ds -> {
+                        if (ds.exists()) {
+                            User user = ds.toObject(User.class);
+                            binding.currentUserName.setText(user.getName());
+
+                            if (user.getProfilePicUrl() != null) {
+                                FirebaseStorage storage = FirebaseStorage.getInstance();
+                                storage.getReference("profile-images/" + user.getProfilePicUrl()).getDownloadUrl()
+                                        .addOnSuccessListener(uri -> {
+
+                                            Glide.with(ProfileFragment.this)
+                                                    .load(uri)
+                                                    .circleCrop()
+                                                    .into(binding.profileImage);
+
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("ProfileFragment", "Error getting image URL", e);
+                                        });
+                            }
+
+                            loadCurrentData(user.getEmail());
+
+                        } else {
+                            Log.e("ProfileFragment", "User data not found");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ProfileFragment", "Error getting user data", e);
+                    });
+
         } else {
             binding.profileLoginBtnLayout.setVisibility(View.VISIBLE);
             binding.profileDisplayLayout.setVisibility(View.GONE);
             binding.logoutBtn.setVisibility(View.GONE);
         }
+    }
+
+    private boolean loadCurrentData(String email) {
+
+        final boolean[] isHavePartner = {false};
+
+        Retrofit retrofit = RetrofitClient.getInstance(getContext());
+        UserApi userApi = retrofit.create(UserApi.class);
+
+        Call<UserDTO> currentUserCall = userApi.getCurrentUser(email);
+        currentUserCall.enqueue(new Callback<UserDTO>() {
+            @Override
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                if (response.isSuccessful()) {
+                    currentUserDTO = response.body();
+
+                    binding.memberFrom.setText("Member From : " + currentUserDTO.getCreatedAt());
+
+                    isHavePartner[0] = true;
+                } else {
+                    Log.e("ProfileFragment", "Error fetching : " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+                Log.e("ProfileFragment", "Error fetching : ", t);
+            }
+        });
+        return isHavePartner[0];
     }
 
     private void openDialog() {
