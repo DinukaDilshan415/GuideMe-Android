@@ -1,5 +1,6 @@
 package me.dinuka.guideme.fragment;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +24,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
 import java.util.UUID;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.dinuka.guideme.R;
+import me.dinuka.guideme.api.PartnerApi;
+import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.DialogEditProfileBinding;
+import me.dinuka.guideme.dto.PartnerDTO;
 import me.dinuka.guideme.model.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class EditProfileSheet extends BottomSheetDialogFragment {
     private DialogEditProfileBinding binding;
@@ -37,6 +48,10 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
     private String ui;
+
+    @Setter
+    @Getter
+    private String imageUri;
 
     public EditProfileSheet(String ui) {
         this.ui = ui;
@@ -82,6 +97,8 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
                         User user = ds.toObject(User.class);
                         binding.nameEditField.setText(user.getName());
 
+                        setImageUri(user.getProfilePicUrl());
+
                         if (user.getProfilePicUrl() != null) {
                             FirebaseStorage storage = FirebaseStorage.getInstance();
                             storage.getReference("profile-images/" + user.getProfilePicUrl()).getDownloadUrl()
@@ -101,27 +118,51 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
                 });
 
         binding.btnSave.setOnClickListener(v -> {
-            String name = binding.nameEditField.getText().toString();
+            Context appContext = requireContext().getApplicationContext();
+
+            String name = binding.nameEditField.getText().toString().trim();
+
+            if (name.isEmpty()) {
+                binding.nameEditField.setError("Name is required");
+                binding.nameEditField.requestFocus();
+                return;
+            }
+
             Bundle result = new Bundle();
 
             UUID uuid = UUID.randomUUID();
             String fileName = "profile_pic_" + uuid + ".jpg";
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            if (selectedUri != null) {
-                if (ui.equals("partners")) {
+
+            if (ui.equals("partners")) {
+                if (selectedUri != null) {
                     StorageReference imageReference = storage.getReference("profile-images")
                             .child(fileName);
                     imageReference.putFile(selectedUri)
                             .addOnSuccessListener(taskSnapshot -> {
                                 firebaseFirestore.collection("partners")
                                         .document(firebaseAuth.getCurrentUser().getUid())
-                                        .update("profilePicUrl", fileName)
+                                        .update("profilePicUrl", fileName, "name", name)
                                         .addOnSuccessListener(aVoid -> {
                                             Log.d("EditProfileSheet", "Profile picture updated successfully");
                                         });
+
+                                updatePartnerData(appContext, firebaseAuth.getCurrentUser().getEmail(), name, fileName);
                             });
-                } else if (ui.equals("users")) {
+                    result.putString("bundleKey", selectedUri.toString());
+                } else {
+                    firebaseFirestore.collection("partners")
+                            .document(firebaseAuth.getCurrentUser().getUid())
+                            .update("name", name)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("EditProfileSheet", "Profile updated successfully");
+                            });
+
+                    updatePartnerData(appContext, firebaseAuth.getCurrentUser().getEmail(), name, getImageUri());
+                }
+            } else if (ui.equals("users")) {
+                if (selectedUri != null) {
                     StorageReference imageReference = storage.getReference("profile-images")
                             .child(fileName);
                     imageReference.putFile(selectedUri)
@@ -133,8 +174,9 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
                                             Log.d("EditProfileSheet", "Profile picture updated successfully");
                                         });
                             });
+                } else {
+
                 }
-                result.putString("bundleKey", selectedUri.toString());
             }
 
             result.putString("updatedName", name);
@@ -147,6 +189,39 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
             pickMedia.launch(new PickVisualMediaRequest.Builder()
                     .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                     .build());
+        });
+    }
+
+    private void updatePartnerData(Context context, String email, String name, String fileName) {
+        if (context == null) return;
+
+        Retrofit instance = RetrofitClient.getInstance(context);
+        PartnerApi partnerApi = instance.create(PartnerApi.class);
+
+        PartnerDTO dto = PartnerDTO.builder()
+                .email(email)
+                .name(name)
+                .imageUrl(fileName)
+                .build();
+
+        Call<HashMap<String, Object>> partnerDTOCall = partnerApi.partnerUpdateNameAndImage(dto);
+
+        partnerDTOCall.enqueue(new Callback<HashMap<String, Object>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
+
+                if (response.isSuccessful()) {
+                    HashMap<String, Object> responseBody = response.body();
+                    Log.d("EditProfileSheet", "Response: " + responseBody.get("message"));
+                } else {
+                    Log.e("EditProfileSheet", "Error: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, Object>> call, Throwable t) {
+                Log.e("EditProfileSheet", "Error: " + t.getMessage());
+            }
         });
     }
 
