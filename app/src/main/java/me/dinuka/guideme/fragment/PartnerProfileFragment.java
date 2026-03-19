@@ -128,12 +128,13 @@ public class PartnerProfileFragment extends Fragment {
                                 FirebaseStorage storage = FirebaseStorage.getInstance();
                                 storage.getReference("profile-images/" + user.getProfilePicUrl()).getDownloadUrl()
                                         .addOnSuccessListener(uri -> {
+                                                    if (isAdded() && getContext() != null) {
+                                                        Glide.with(getContext().getApplicationContext())
+                                                                .load(uri)
+                                                                .circleCrop()
+                                                                .into(binding.profileImage);
 
-                                            Glide.with(PartnerProfileFragment.this)
-                                                    .load(uri)
-                                                    .circleCrop()
-                                                    .into(binding.profileImage);
-
+                                                    }
                                         })
                                         .addOnFailureListener(e -> {
                                             Log.e("PartnerProfileFragment", "Error getting image URL", e);
@@ -162,29 +163,32 @@ public class PartnerProfileFragment extends Fragment {
 
         final boolean[] isHavePartner = {false};
 
-        Retrofit retrofit = RetrofitClient.getInstance(getContext());
-        PartnerApi partnerApi = retrofit.create(PartnerApi.class);
+        if (getContext() != null){
+            Retrofit retrofit = RetrofitClient.getInstance(getContext());
+            PartnerApi partnerApi = retrofit.create(PartnerApi.class);
 
-        Call<PartnerDTO> currentPartnerCall = partnerApi.getCurrentPartner(email);
-        currentPartnerCall.enqueue(new Callback<PartnerDTO>() {
-            @Override
-            public void onResponse(Call<PartnerDTO> call, Response<PartnerDTO> response) {
-                if (response.isSuccessful()) {
-                    currentPartner = response.body();
+            Call<PartnerDTO> currentPartnerCall = partnerApi.getCurrentPartner(email);
+            currentPartnerCall.enqueue(new Callback<PartnerDTO>() {
+                @Override
+                public void onResponse(Call<PartnerDTO> call, Response<PartnerDTO> response) {
+                    if (response.isSuccessful()) {
+                        currentPartner = response.body();
 
-                    binding.partnerFrom.setText("Partner from : " + currentPartner.getCreatedAt());
+                        binding.partnerFrom.setText("Partner from : " + currentPartner.getCreatedAt());
 
-                    isHavePartner[0] = true;
-                } else {
-                    Log.e("PartnerProfileFragment", "Error fetching : " + response);
+                        isHavePartner[0] = true;
+                    } else {
+                        Log.e("PartnerProfileFragment", "Error fetching : " + response);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PartnerDTO> call, Throwable t) {
-                Log.e("PartnerProfileFragment", "Error fetching : ", t);
-            }
-        });
+                @Override
+                public void onFailure(Call<PartnerDTO> call, Throwable t) {
+                    Log.e("PartnerProfileFragment", "Error fetching : ", t);
+                }
+            });
+        };
+
         return isHavePartner[0];
     }
 
