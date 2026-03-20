@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.databinding.FragmentThingsToDoListingDetailsBinding;
 
@@ -17,10 +19,15 @@ public class ThingsToDoListingDetailsFragment extends Fragment {
 
     private FragmentThingsToDoListingDetailsBinding binding;
     private int bookingCount = 1;
+    HashMap<String, Object> commanListingData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            commanListingData = (HashMap<String, Object>) getArguments().getSerializable("listingData");
+        }
     }
 
     @Override

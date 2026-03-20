@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.dinuka.guideme.R;
@@ -43,10 +44,14 @@ public class HotelListingDetailsFragment extends Fragment {
     private int adultCount = 1;
     List<Facility> facilityList;
     private List<FacilityDTO> facilityDTOS;
+    HashMap<String, Object> commanListingData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            commanListingData = (HashMap<String, Object>) getArguments().getSerializable("listingData");
+        }
     }
 
     @Override
@@ -94,14 +99,30 @@ public class HotelListingDetailsFragment extends Fragment {
         loadFacilities();
 
         binding.nextFromHotelDetailBtn.setOnClickListener(v -> {
-            ArrayList<String> selected = new ArrayList<>();
-            for (Facility f : facilityList) {
-                if (f.isSelected()) selected.add(f.getTitle());
+
+            Log.i("HotelListingDetailsFragment", "title: " + commanListingData.get("title"));
+            Log.i("HotelListingDetailsFragment", "description: " + commanListingData.get("description"));
+            Log.i("HotelListingDetailsFragment", "address: " + commanListingData.get("address"));
+            Log.i("HotelListingDetailsFragment", "price: " + commanListingData.get("price"));
+            Log.i("HotelListingDetailsFragment", "latitude: " + commanListingData.get("latitude"));
+            Log.i("HotelListingDetailsFragment", "longitude: " + commanListingData.get("longitude"));
+            Log.i("HotelListingDetailsFragment", "locationName: " + commanListingData.get("locationName"));
+            Log.i("HotelListingDetailsFragment", "categoryName: " + commanListingData.get("categoryName"));
+            Log.i("HotelListingDetailsFragment", "categoryId: " + commanListingData.get("categoryId"));
+
+            for (Object image : (List<Object>) commanListingData.get("images")) {
+                Log.i("HotelListingDetailsFragment", "image: " + image.toString());
             }
 
-            for (String s : selected) {
-                Log.d("SELECTED", s);
-            }
+
+//            ArrayList<String> selected = new ArrayList<>();
+//            for (Facility f : facilityList) {
+//                if (f.isSelected()) selected.add(f.getTitle());
+//            }
+//
+//            for (String s : selected) {
+//                Log.d("SELECTED", s);
+//            }
         });
     }
 
