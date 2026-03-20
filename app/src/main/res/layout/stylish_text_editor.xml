@@ -105,12 +105,19 @@
             android:layout_height="1dp"
             android:layout_width="match_parent" />
 
-        <jp.wasabeef.richeditor.RichEditor
-            android:background="@android:color/white"
-            android:id="@+id/editor"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent" />
+            android:fillViewport="true">
+
+            <jp.wasabeef.richeditor.RichEditor
+                android:background="@android:color/white"
+                android:id="@+id/editor"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent" />
+
+        </androidx.core.widget.NestedScrollView>
 
         <View
             android:background="#CCC"

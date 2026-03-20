@@ -36,7 +36,6 @@ public class PartnerPersonalDetailsFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
     private PartnerDTO currentPartnerDTO;
-
     private PartnerAddressDTO addressDTO;
 
     @Override

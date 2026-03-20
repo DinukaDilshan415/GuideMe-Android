@@ -1,5 +1,6 @@
 package me.dinuka.guideme.fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,23 +16,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.adapter.FacilityAdapter;
 import me.dinuka.guideme.adapter.FacilitySelectAdapter;
 import me.dinuka.guideme.adapter.RoomTypeAdapter;
 import me.dinuka.guideme.api.FacilityApi;
+import me.dinuka.guideme.api.ListingApi;
+import me.dinuka.guideme.api.PartnerApi;
 import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.FragmentHotelListingDetailsBinding;
 import me.dinuka.guideme.dto.FacilityDTO;
+import me.dinuka.guideme.dto.PartnerAddressDTO;
 import me.dinuka.guideme.model.Facility;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class HotelListingDetailsFragment extends Fragment {
 
@@ -43,8 +54,13 @@ public class HotelListingDetailsFragment extends Fragment {
     private int roomCount = 1;
     private int adultCount = 1;
     List<Facility> facilityList;
+    ArrayList<Integer> selectedFacilities = new ArrayList<>();
+    List<String> imageUris = new ArrayList<>();
     private List<FacilityDTO> facilityDTOS;
     HashMap<String, Object> commanListingData;
+
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +80,9 @@ public class HotelListingDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         setupCounters();
 
@@ -100,29 +119,145 @@ public class HotelListingDetailsFragment extends Fragment {
 
         binding.nextFromHotelDetailBtn.setOnClickListener(v -> {
 
-            Log.i("HotelListingDetailsFragment", "title: " + commanListingData.get("title"));
-            Log.i("HotelListingDetailsFragment", "description: " + commanListingData.get("description"));
-            Log.i("HotelListingDetailsFragment", "address: " + commanListingData.get("address"));
-            Log.i("HotelListingDetailsFragment", "price: " + commanListingData.get("price"));
-            Log.i("HotelListingDetailsFragment", "latitude: " + commanListingData.get("latitude"));
-            Log.i("HotelListingDetailsFragment", "longitude: " + commanListingData.get("longitude"));
-            Log.i("HotelListingDetailsFragment", "locationName: " + commanListingData.get("locationName"));
-            Log.i("HotelListingDetailsFragment", "categoryName: " + commanListingData.get("categoryName"));
-            Log.i("HotelListingDetailsFragment", "categoryId: " + commanListingData.get("categoryId"));
-
-            for (Object image : (List<Object>) commanListingData.get("images")) {
-                Log.i("HotelListingDetailsFragment", "image: " + image.toString());
+            for (Facility f : facilityList) {
+                if (f.isSelected()) selectedFacilities.add(f.getId());
             }
 
-
-//            ArrayList<String> selected = new ArrayList<>();
-//            for (Facility f : facilityList) {
-//                if (f.isSelected()) selected.add(f.getTitle());
-//            }
+//            Log.i("HotelListingDetailsFragment", "title: " + commanListingData.get("title"));
+//            Log.i("HotelListingDetailsFragment", "description: " + commanListingData.get("description"));
+//            Log.i("HotelListingDetailsFragment", "address: " + commanListingData.get("address"));
+//            Log.i("HotelListingDetailsFragment", "price: " + commanListingData.get("price"));
+//            Log.i("HotelListingDetailsFragment", "latitude: " + commanListingData.get("latitude"));
+//            Log.i("HotelListingDetailsFragment", "longitude: " + commanListingData.get("longitude"));
+//            Log.i("HotelListingDetailsFragment", "locationName: " + commanListingData.get("locationName"));
+//            Log.i("HotelListingDetailsFragment", "categoryName: " + commanListingData.get("categoryName"));
+//            Log.i("HotelListingDetailsFragment", "categoryId: " + commanListingData.get("categoryId"));
 //
-//            for (String s : selected) {
-//                Log.d("SELECTED", s);
+//            for (Object image : (List<Object>) commanListingData.get("images")) {
+//                Log.i("HotelListingDetailsFragment", "image: " + image.toString());
 //            }
+
+            if (adultCount < 1){
+                adultCount = 1;
+            }
+
+            if (roomCount < 1){
+                roomCount = 1;
+            }
+
+            if (roomTypes.isEmpty()){
+                new Sweetalert(requireContext(), Sweetalert.WARNING_TYPE)
+                        .setTitleText("Warning")
+                        .setContentText("Add Room Types")
+                        .show();
+                return;
+            }
+
+            if (selectedFacilities.isEmpty()){
+                new Sweetalert(requireContext(), Sweetalert.WARNING_TYPE)
+                        .setTitleText("Warning")
+                        .setContentText("Select What Your Place Offer")
+                        .show();
+                return;
+            }
+
+            saveNewListing(firebaseAuth.getCurrentUser().getEmail());
+        });
+    }
+
+    private void saveNewListing(String email) {
+        Sweetalert pDialog = new Sweetalert(requireContext(), Sweetalert.PROGRESS_TYPE);
+        pDialog.setTitleText("Uploading Data...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        List<Uri> images = (List<Uri>) commanListingData.get("images");
+
+        imageUris.clear();
+
+        final int totalImages = images.size();
+        final int[] processedCount = {0};
+
+        for (Uri image : images) {
+            UUID uuid = UUID.randomUUID();
+            String fileName = "hotel_pic_" + uuid + ".jpg";
+
+            StorageReference imageReference = storage.getReference("hotel-images")
+                    .child(fileName);
+            imageReference.putFile(image)
+                    .addOnSuccessListener(taskSnapshot -> {
+
+                        imageUris.add(fileName);
+
+                        processedCount[0]++;
+                        if (processedCount[0] == totalImages) {
+                            sendDataToRetrofit(email, pDialog);
+                        }
+
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("HotelListingDetailsFragment", "Error uploading image", e);
+
+                        processedCount[0]++;
+                        // We still increment even on failure so the process can finish
+                        if (processedCount[0] == totalImages) {
+                            sendDataToRetrofit(email, pDialog);
+                        }
+                    });
+        }
+    }
+
+    private void sendDataToRetrofit(String email, Sweetalert pDialog) {
+        Retrofit instance = RetrofitClient.getInstance(requireContext());
+        ListingApi listingApi = instance.create(ListingApi.class);
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("email", email);
+        data.put("title", commanListingData.get("title"));
+        data.put("description", commanListingData.get("description"));
+        data.put("address", commanListingData.get("address"));
+        data.put("price", commanListingData.get("price"));
+        data.put("latitude", commanListingData.get("latitude"));
+        data.put("longitude", commanListingData.get("longitude"));
+        data.put("locationName", commanListingData.get("locationName"));
+        data.put("categoryName", commanListingData.get("categoryName"));
+        data.put("categoryId", commanListingData.get("categoryId"));
+        data.put("adultCount", adultCount);
+        data.put("roomCount", roomCount);
+        data.put("selectedFacilities", selectedFacilities);
+        data.put("roomTypes", roomTypes);
+        data.put("imageUris", imageUris);
+
+        Call<HashMap<String, Object>> listingCall = listingApi.addNewListing(data);
+
+        listingCall.enqueue(new Callback<HashMap<String, Object>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
+                pDialog.dismissWithAnimation();
+                if (response.isSuccessful()) {
+                    HashMap<String, Object> responseBody = response.body();
+                    Log.d("HotelListingDetailsFragment", "Response: " + responseBody.get("message"));
+
+                    new Sweetalert(requireContext(), Sweetalert.SUCCESS_TYPE)
+                            .setTitleText("Success")
+                            .setContentText("New Listing Added Successfully")
+                            .show();
+
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.partner_fragment_container, new PartnerHomeFragment())
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    Log.e("HotelListingDetailsFragment", "Error: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, Object>> call, Throwable t) {
+                Log.e("HotelListingDetailsFragment", "Error: " + t.getMessage());
+                pDialog.dismissWithAnimation();
+            }
         });
     }
 
