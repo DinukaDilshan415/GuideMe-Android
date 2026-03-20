@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.dinuka.guideme.R;
@@ -30,10 +31,14 @@ public class ServiceListingDetailsFragment extends Fragment {
     private QualificationsAddAdapter adapter;
     private RecyclerView qualificationsRv;
     private EditText qualificationsInput;
+    HashMap<String, Object> commanListingData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            commanListingData = (HashMap<String, Object>) getArguments().getSerializable("listingData");
+        }
     }
 
     @Override

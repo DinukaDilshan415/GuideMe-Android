@@ -9,4 +9,5 @@
     <string name="home_search_hint">Search Here...</string>
     <string name="notifications">Notifications</string>
     <string name="default_web_client_id">904896597419-jf6077q5tgdeo5517erilsdeh40v9tri.apps.googleusercontent.com</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
