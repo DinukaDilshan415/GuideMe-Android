@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.dinuka.guideme.R;
@@ -33,10 +35,14 @@ import me.dinuka.guideme.model.Review;
 public class HotelDetailsFragment extends Fragment {
 
     private FragmentHotelDetailsBinding binding;
+    private HashMap<String, Object> detailsMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            detailsMap = (HashMap<String, Object>) getArguments().getSerializable("selectedHotel");
+        }
     }
 
     @Override
@@ -50,6 +56,9 @@ public class HotelDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Log.d("selectedHotel", detailsMap.get("partnerMobile").toString());
+
 
         getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
 

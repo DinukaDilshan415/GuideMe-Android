@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.HashMap;
 import java.util.List;
 
 import me.dinuka.guideme.R;
@@ -55,7 +56,7 @@ public class HotelListingAdapter extends RecyclerView.Adapter<HotelListingAdapte
             v.startAnimation(animation);
 
             if (listener != null){
-                listener.onListingItemClick(hotel);
+                listener.onListingItemClick(hotel.getDetailsMap());
             }
         });
     }
@@ -85,6 +86,6 @@ public class HotelListingAdapter extends RecyclerView.Adapter<HotelListingAdapte
     }
 
     public interface OnListingItemClickListener{
-        void onListingItemClick(Hotel hotel);
+        void onListingItemClick(HashMap<String, Object> detailsMap);
     }
 }
