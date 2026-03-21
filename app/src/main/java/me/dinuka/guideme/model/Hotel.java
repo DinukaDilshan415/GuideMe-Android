@@ -1,5 +1,6 @@
 package me.dinuka.guideme.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -19,4 +20,5 @@ public class Hotel {
     private double rating;
     private int reviewsCount;
     private List<String> images;
+    private HashMap<String, Object> detailsMap;
 }

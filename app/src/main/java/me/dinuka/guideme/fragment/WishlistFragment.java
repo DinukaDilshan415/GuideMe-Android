@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import me.dinuka.guideme.R;
@@ -43,9 +44,9 @@ public class WishlistFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel(0, "New Ella Nature View Ella Nature View", 57, "Ella", 4.5, 228, new ArrayList<>(Arrays.asList("https://cf.bstatic.com/xdata/images/hotel/max1024x768/679226546.jpg?k=93984560a6eea303c7a8978fa3884e125c29a03629bd06b5f0e7e20b865853a4&o="))));
-        hotels.add(new Hotel(1, "Cinnamon Wild Yala", 64, "Yala", 5, 22, new ArrayList<>(Arrays.asList("https://cf.bstatic.com/xdata/images/hotel/max1024x768/645050529.jpg?k=0ada0d186488560371fe60634ad0d95a4aed8d6114f3e988ac683bbfdd8b9ca2&o="))));
-        hotels.add(new Hotel(2, "Cinnamon Life at City of Dreams", 560, "Colombo, Sri Lanka", 4.5, 235, new ArrayList<>(Arrays.asList("https://cf.bstatic.com/xdata/images/hotel/max1024x768/588945741.jpg?k=0c6c7b0fd96d38c70101f6b57ddb2e75eeece3889616d3a28877f5cc3d5fd7ef&o="))));
+        hotels.add(new Hotel(0, "New Ella Nature View Ella Nature View", 57, "Ella", 4.5, 228, new ArrayList<>(Arrays.asList("https://cf.bstatic.com/xdata/images/hotel/max1024x768/679226546.jpg?k=93984560a6eea303c7a8978fa3884e125c29a03629bd06b5f0e7e20b865853a4&o=")), new HashMap<>()));
+        hotels.add(new Hotel(1, "Cinnamon Wild Yala", 64, "Yala", 5, 22, new ArrayList<>(Arrays.asList("https://cf.bstatic.com/xdata/images/hotel/max1024x768/645050529.jpg?k=0ada0d186488560371fe60634ad0d95a4aed8d6114f3e988ac683bbfdd8b9ca2&o=")), new HashMap<>()));
+        hotels.add(new Hotel(2, "Cinnamon Life at City of Dreams", 560, "Colombo, Sri Lanka", 4.5, 235, new ArrayList<>(Arrays.asList("https://cf.bstatic.com/xdata/images/hotel/max1024x768/588945741.jpg?k=0c6c7b0fd96d38c70101f6b57ddb2e75eeece3889616d3a28877f5cc3d5fd7ef&o=")), new HashMap<>()));
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
