@@ -149,10 +149,10 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/nextFromThingsToDetailBtn"
+            android:id="@+id/save_listing_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
+            android:text="Save Listing"
             android:textSize="16sp" />
     </LinearLayout>
 
