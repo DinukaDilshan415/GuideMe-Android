@@ -47,14 +47,15 @@ public class PartnerListingAdapter extends RecyclerView.Adapter<PartnerListingAd
 
         int categoryIcon = R.drawable.hotel_svgrepo_com;
 
-        holder.listingNumber.setText("#122324324");
+        holder.listingNumber.setText(listing.getListingId());
+        holder.listingStatus.setText(listing.getStatus());
         holder.listingCategory.setText(category);
 
-        if (category.equals("Hotel")){
+        if (category.equals("Hotels")){
             categoryIcon = R.drawable.hotel_svgrepo_com;
         } else if (category.equals("Things To Do")){
             categoryIcon = R.drawable.things_to_do;
-        } else if (category.equals("Service")) {
+        } else if (category.equals("Services")) {
             categoryIcon = R.drawable.service_svgrepo_com;
         }
 
@@ -89,6 +90,7 @@ public class PartnerListingAdapter extends RecyclerView.Adapter<PartnerListingAd
         ImageView listingImage;
         TextView listingName;
         TextView listingNumber;
+        TextView listingStatus;
         TextView listingCategory;
         ImageView listingCategoryIcon;
         TextView listinglocation;
@@ -101,6 +103,7 @@ public class PartnerListingAdapter extends RecyclerView.Adapter<PartnerListingAd
             listingImage = itemView.findViewById(R.id.listingImage);
             listingName = itemView.findViewById(R.id.listingName);
             listingNumber = itemView.findViewById(R.id.listingNumber);
+            listingStatus = itemView.findViewById(R.id.listingStatus);
             listingCategory = itemView.findViewById(R.id.listingCategory);
             listingCategoryIcon = itemView.findViewById(R.id.listingCategoryIcon);
             listinglocation = itemView.findViewById(R.id.listinglocation);

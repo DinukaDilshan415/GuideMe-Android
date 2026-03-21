@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Listing {
-    private String id;
+    private int id;
+    private String listingId;
+    private String status;
     private String category;
     private String name;
     private double price;
