@@ -16,11 +16,68 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/product_image_slider"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@color/md_theme_secondary" />
+                android:layout_height="300dp">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/product_image_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/sample1" />
+
+                <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+                    android:id="@+id/dotsIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="34dp"
+                    app:dotsColor="#ffffff"
+                    app:dotsSize="8dp"
+                    app:dotsSpacing="4dp"
+                    app:selectedDotColor="@color/md_theme_secondary" />
+
+                <LinearLayout
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="top|center_horizontal"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="12dp">
+
+                    <ImageButton
+                        android:id="@+id/backBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/white_circle_shape"
+                        android:padding="6dp"
+                        android:src="@drawable/arrow_back_24px" />
+
+                    <android.widget.TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/addWishListBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/white_circle_shape"
+                        android:padding="6dp"
+                        android:src="@drawable/favorite_24px" />
+
+                </LinearLayout>
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,10 +85,10 @@
                 android:layout_marginTop="-30dp"
                 android:background="@drawable/rounded_top_corners"
                 android:orientation="vertical"
-                android:padding="20dp"
-                app:layout_constraintTop_toBottomOf="@id/hotelImage">
+                android:padding="20dp">
 
                 <TextView
+                    android:id="@+id/d_hotelName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="The Aston Vill Hotel The Aston Vill Hotel"
@@ -50,7 +107,7 @@
                         android:src="@drawable/location_on_24px" />
 
                     <TextView
-                        android:id="@+id/location"
+                        android:id="@+id/d_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -59,7 +116,7 @@
                         android:textSize="14sp" />
 
                     <RatingBar
-                        android:id="@+id/product_details_rating"
+                        android:id="@+id/d_product_rating_bar"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -67,7 +124,7 @@
                         android:rating="4.5" />
 
                     <TextView
-                        android:id="@+id/rating"
+                        android:id="@+id/d_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
@@ -106,7 +163,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/facilitiesRecyclerView"
+                    android:id="@+id/d_facilitiesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -119,18 +176,11 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/d_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Elegant Accommodations: Cinnamon Life at City of Dreams in Colombo offers a 5-star hotel experience with luxurious rooms featuring sea, lake, or city views. Each room includes air-conditioning, a private bathroom, and modern amenities.
-
-Exceptional Facilities: Guests can enjoy an infinity swimming pool, sun terrace, fitness room, and free WiFi. Additional facilities include a pool bar, coffee shop, and outdoor seating area.
-
-Dining Experience: The family-friendly restaurant serves a variety of cuisines, including Chinese, British, Indian, and local specialties. Breakfast options include continental, American, and Asian.
-
-Prime Location: Located an 8-minute walk from Galle Face Beach and near attractions such as One Galle Face and Colombo City Center Shopping Mall. Guests can also enjoy kayaking or canoeing in the surroundings.
-
-Couples in particular like the location – they rated it 9.4 for a two-person trip."
+                    android:text="descrption"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -159,7 +209,7 @@ Couples in particular like the location – they rated it 9.4 for a two-person t
                 </LinearLayout>
 
                 <com.google.android.gms.maps.MapView
-                    android:id="@+id/mapView"
+                    android:id="@+id/d_mapView"
                     android:layout_width="match_parent"
                     android:layout_height="160dp" />
 
@@ -179,6 +229,7 @@ Couples in particular like the location – they rated it 9.4 for a two-person t
                         android:id="@+id/hosterImage"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
+                        app:shapeAppearanceOverlay="@style/CircleImage"
                         android:src="@drawable/sample1"
                         android:scaleType="centerCrop"
                         android:background="@drawable/circle_shape" />
@@ -191,16 +242,18 @@ Couples in particular like the location – they rated it 9.4 for a two-person t
                         android:layout_marginStart="8dp">
 
                         <TextView
+                            android:id="@+id/d_partnerName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Hosted By Dinuka"
+                            android:text="Hosted By "
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/d_hostingPeriod"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="6 month hosting"
+                            android:text="hosting"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -230,6 +283,7 @@ Couples in particular like the location – they rated it 9.4 for a two-person t
                             />
 
                         <TextView
+                            android:id="@+id/d_address"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -253,6 +307,7 @@ Couples in particular like the location – they rated it 9.4 for a two-person t
                             />
 
                         <TextView
+                            android:id="@+id/d_partnerEmail"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -286,6 +341,7 @@ Couples in particular like the location – they rated it 9.4 for a two-person t
                             />
 
                         <TextView
+                            android:id="@+id/d_partnerMobile"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -370,9 +426,10 @@ Couples in particular like the location – they rated it 9.4 for a two-person t
                 android:text="Price" />
 
             <TextView
+                android:id="@+id/d_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$120.00"
+                android:text="$"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
