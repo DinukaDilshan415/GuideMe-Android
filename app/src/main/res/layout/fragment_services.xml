@@ -1,17 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ServicesFragment">
+    tools:context=".fragment.HotelsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/loadingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Services"
-        android:textSize="24sp"
-        android:gravity="center"
-        />
+        android:orientation="vertical"
+        android:visibility="visible"
+        >
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/loadingImage"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:src="@drawable/loadingbuffering"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/noContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:padding="16dp"
+            android:text="You Not Have Any Listing To View"
+            android:textSize="28sp"
+            android:textColor="@color/md_theme_secondary"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:gravity="center"
+
+            />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/recycler_view_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+
+        <include
+            android:id="@+id/forYou_section"
+            layout="@layout/service_item_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

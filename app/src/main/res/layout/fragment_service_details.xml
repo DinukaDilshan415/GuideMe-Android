@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.HotelDetailsFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomBookingBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/product_image_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/sample1" />
+
+                <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+                    android:id="@+id/dotsIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="34dp"
+                    app:dotsColor="#ffffff"
+                    app:dotsSize="8dp"
+                    app:dotsSpacing="4dp"
+                    app:selectedDotColor="@color/md_theme_secondary" />
+
+                <LinearLayout
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="top|center_horizontal"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="12dp">
+
+                    <ImageButton
+                        android:id="@+id/backBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/white_circle_shape"
+                        android:padding="6dp"
+                        android:src="@drawable/arrow_back_24px" />
+
+                    <android.widget.TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/addWishListBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/white_circle_shape"
+                        android:padding="6dp"
+                        android:src="@drawable/favorite_24px" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-30dp"
+                android:background="@drawable/rounded_top_corners"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/d_serviceName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="The Aston Vill Hotel The Aston Vill Hotel"
+                    android:textSize="24sp"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/location_on_24px" />
+
+                    <TextView
+                        android:id="@+id/d_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:text="Ella"
+                        android:textSize="14sp" />
+
+                    <RatingBar
+                        android:id="@+id/d_product_rating_bar"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:progressTint="#FFC107"
+                        android:rating="4.5" />
+
+                    <TextView
+                        android:id="@+id/d_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/bg_rating"
+                        android:padding="4dp"
+                        android:text="4.5"
+                        android:textColor="@color/md_theme_onPrimary"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Description"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/d_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:backgroundTint="#edffed"
+                    android:text="description"
+                    android:background="@drawable/custom_input_search"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Where we'll meet"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/seeMapBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="Open Map"
+                        android:textColor="@color/md_theme_secondary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/d_mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="12dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="My Qualifications"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:textStyle="bold"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/d_qualificationRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/hosterImage"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        app:shapeAppearanceOverlay="@style/CircleImage"
+                        android:src="@drawable/sample1"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circle_shape" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:id="@+id/d_partnerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Hosted By "
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/d_hostingPeriod"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="hosting"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginVertical="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/location_on_24px"
+                            android:layout_gravity="center_vertical"
+                            />
+
+                        <TextView
+                            android:id="@+id/d_address"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="8dp"
+                            android:text="No, 4/a aluthgama, dekinda, nawalapirita."
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/mail_24px"
+                            android:layout_gravity="center_vertical"
+                            />
+
+                        <TextView
+                            android:id="@+id/d_partnerEmail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_gravity="center_vertical"
+                            android:text="dinuka@gmail.com"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/send_mail_btn"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            app:icon="@drawable/mail_24px"
+                            app:iconGravity="top"
+                            />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/call_24px"
+                            android:layout_gravity="center_vertical"
+                            />
+
+                        <TextView
+                            android:id="@+id/d_partnerMobile"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_gravity="center_vertical"
+                            android:text="0775679873"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/call_btn"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            app:icon="@drawable/call_24px"
+                            app:iconGravity="top"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Reviews"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/reviewsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Show All Reviews"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        app:cornerRadius="8dp"
+                        android:textColor="@color/md_theme_primary"
+                        android:backgroundTint="#F4F8F4"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomBookingBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:elevation="10dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="22dp"
+        android:paddingVertical="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Price" />
+
+            <TextView
+                android:id="@+id/d_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/reserveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Reserve" />
+    </LinearLayout>
+
+</RelativeLayout>
