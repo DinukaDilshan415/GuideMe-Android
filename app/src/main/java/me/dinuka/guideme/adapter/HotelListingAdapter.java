@@ -79,9 +79,9 @@ public class HotelListingAdapter extends RecyclerView.Adapter<HotelListingAdapte
             hotelImage = itemView.findViewById(R.id.hotelImage);
             hotelName = itemView.findViewById(R.id.hotelName);
             hotelPrice = itemView.findViewById(R.id.hotelPrice);
-            rating = itemView.findViewById(R.id.rating);
-            reviewsCount = itemView.findViewById(R.id.reviewsCount);
-            location = itemView.findViewById(R.id.location);
+            rating = itemView.findViewById(R.id.hotel_rating);
+            reviewsCount = itemView.findViewById(R.id.hotel_reviewsCount);
+            location = itemView.findViewById(R.id.hotel_location);
         }
     }
 

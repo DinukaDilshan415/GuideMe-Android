@@ -80,9 +80,9 @@ public class ThingsToDoListingAdapter extends RecyclerView.Adapter<ThingsToDoLis
             thingsToDoImage = itemView.findViewById(R.id.thingsToDoImage);
             thingsToDoName = itemView.findViewById(R.id.thingToDoName);
             thingsToDoPrice = itemView.findViewById(R.id.thingsToDoPrice);
-            rating = itemView.findViewById(R.id.rating);
-            reviewsCount = itemView.findViewById(R.id.reviewsCount);
-            location = itemView.findViewById(R.id.location);
+            rating = itemView.findViewById(R.id.thingToDo_rating);
+            reviewsCount = itemView.findViewById(R.id.thingToDo_reviewsCount);
+            location = itemView.findViewById(R.id.thingToDo_location);
         }
     }
 
