@@ -31,9 +31,11 @@ import lombok.Getter;
 import lombok.Setter;
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.api.PartnerApi;
+import me.dinuka.guideme.api.UserApi;
 import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.DialogEditProfileBinding;
 import me.dinuka.guideme.dto.PartnerDTO;
+import me.dinuka.guideme.dto.UserDTO;
 import me.dinuka.guideme.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -169,13 +171,23 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
                             .addOnSuccessListener(taskSnapshot -> {
                                 firebaseFirestore.collection("users")
                                         .document(firebaseAuth.getCurrentUser().getUid())
-                                        .update("profilePicUrl", fileName)
+                                        .update("profilePicUrl", fileName, "name", name)
                                         .addOnSuccessListener(aVoid -> {
                                             Log.d("EditProfileSheet", "Profile picture updated successfully");
                                         });
-                            });
-                } else {
 
+                                updateUserData(appContext, firebaseAuth.getCurrentUser().getEmail(), name, fileName);
+                            });
+                    result.putString("bundleKey", selectedUri.toString());
+                } else {
+                    firebaseFirestore.collection("users")
+                            .document(firebaseAuth.getCurrentUser().getUid())
+                            .update("name", name)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("EditProfileSheet", "Profile updated successfully");
+                            });
+
+                    updateUserData(appContext, firebaseAuth.getCurrentUser().getEmail(), name, getImageUri());
                 }
             }
 
@@ -207,6 +219,39 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
         Call<HashMap<String, Object>> partnerDTOCall = partnerApi.partnerUpdateNameAndImage(dto);
 
         partnerDTOCall.enqueue(new Callback<HashMap<String, Object>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
+
+                if (response.isSuccessful()) {
+                    HashMap<String, Object> responseBody = response.body();
+                    Log.d("EditProfileSheet", "Response: " + responseBody.get("message"));
+                } else {
+                    Log.e("EditProfileSheet", "Error: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, Object>> call, Throwable t) {
+                Log.e("EditProfileSheet", "Error: " + t.getMessage());
+            }
+        });
+    }
+
+    private void updateUserData(Context context, String email, String name, String fileName) {
+        if (context == null) return;
+
+        Retrofit instance = RetrofitClient.getInstance(context);
+        UserApi userApi = instance.create(UserApi.class);
+
+        UserDTO dto = UserDTO.builder()
+                .email(email)
+                .name(name)
+                .imageUrl(fileName)
+                .build();
+
+        Call<HashMap<String, Object>> userDTOCall = userApi.userUpdateNameAndImage(dto);
+
+        userDTOCall.enqueue(new Callback<HashMap<String, Object>>() {
             @Override
             public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
 
