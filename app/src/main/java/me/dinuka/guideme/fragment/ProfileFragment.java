@@ -84,6 +84,13 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
 
+        binding.personalDetailsLayout.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new UserPersonalDetailsFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         getParentFragmentManager().setFragmentResultListener("requestKey", getViewLifecycleOwner(), (requestKey, bundle) -> {
             String imageUriString = bundle.getString("bundleKey");
             String updatedName = bundle.getString("updatedName");
