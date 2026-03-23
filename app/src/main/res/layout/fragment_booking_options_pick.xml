@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@color/md_theme_primary"
         android:paddingHorizontal="8dp"
         android:paddingVertical="12dp">
 
@@ -20,6 +21,7 @@
             android:layout_gravity="center"
             android:background="@drawable/circle_shape"
             android:padding="6dp"
+            app:tint="@color/md_theme_onPrimary"
             android:src="@drawable/arrow_back_24px" />
 
         <android.widget.TextView
@@ -29,6 +31,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:text="Continue Reserve"
+            android:textColor="@color/md_theme_onPrimary"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -38,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/circle_shape"
+            app:tint="@color/md_theme_onPrimary"
             android:padding="6dp"
             android:src="@drawable/three_dots_24px" />
 
@@ -50,7 +54,7 @@
         android:layout_above="@id/summery_section"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="8dp"
-        android:paddingHorizontal="8dp">
+        android:paddingHorizontal="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,10 +67,12 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/hosterImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:id="@+id/b_hotelImage"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="centerCrop"
+                    android:layout_gravity="center"
+                    app:shapeAppearanceOverlay="@style/ListingImage"
                     android:src="@drawable/sample1" />
 
                 <LinearLayout
@@ -77,6 +83,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/b_hotelName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Casa Selvita - A cozy hideaway"
@@ -95,16 +102,16 @@
                             android:src="@drawable/location_on_24px" />
 
                         <TextView
-                            android:id="@+id/location"
+                            android:id="@+id/b_hotel_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_weight="1"
-                            android:text="Ella"
-                            android:textSize="14sp" />
+                            android:text="Ella dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                            android:textSize="12sp" />
 
                         <RatingBar
-                            android:id="@+id/product_details_rating"
+                            android:id="@+id/b_hotel_rating_bar"
                             style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -112,7 +119,7 @@
                             android:rating="4.5" />
 
                         <TextView
-                            android:id="@+id/rating"
+                            android:id="@+id/b_hotel_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
@@ -170,7 +177,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tvCheckInDate"
+                            android:id="@+id/hotelCheckInDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Fri, mar 13"
@@ -182,7 +189,7 @@
                             android:text=" - " />
 
                         <TextView
-                            android:id="@+id/tvCheckOutDate"
+                            android:id="@+id/hotwlCheckOutDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Fri, mar 13"
@@ -256,7 +263,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/countAdult"
+                                android:id="@+id/hotel_countAdult"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2 adult"
@@ -268,10 +275,10 @@
                                 android:text=" - " />
 
                             <TextView
-                                android:id="@+id/countChild"
+                                android:id="@+id/hotel_countChild"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1 child"
+                                android:text="0 child"
                                 android:textSize="16sp" />
 
                         </LinearLayout>
@@ -379,10 +386,10 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/roomCount"
+                                android:id="@+id/booking_hotel_roomCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2 "
+                                android:text="1 "
                                 android:textSize="16sp" />
 
                             <TextView
@@ -391,10 +398,10 @@
                                 android:text=" - " />
 
                             <TextView
-                                android:id="@+id/roomType"
+                                android:id="@+id/b_roomType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="King size ocean view"
+                                android:text="Select room type"
                                 android:textSize="16sp" />
 
                         </LinearLayout>
@@ -435,6 +442,11 @@
                         android:id="@+id/rowRooms"
                         layout="@layout/layout_counter_row" />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/roomTypeRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
                     <Button
                         android:id="@+id/btnRoomsApply"
                         android:layout_width="match_parent"
@@ -466,7 +478,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -506,7 +519,7 @@
                             />
 
                         <TextView
-                            android:id="@+id/checkout_subtotal"
+                            android:id="@+id/hotel_booking_subtotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="$ 70"
@@ -529,7 +542,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
-                            android:id="@+id/checkout_shipping"
+                            android:id="@+id/hotel_bookingFee"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="$ 5"
@@ -559,7 +572,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
-                            android:id="@+id/checkout_total"
+                            android:id="@+id/hotel_booking_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="$ 75"
@@ -576,12 +589,14 @@
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/checkout_btn_proceed"
+            android:id="@+id/proceed_to_reserve_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="10dp"
-            android:text="Proceed to Reserve" />
+            android:text="Proceed to Reserve"
+            android:textSize="16sp"
+            />
 
     </LinearLayout>
 
