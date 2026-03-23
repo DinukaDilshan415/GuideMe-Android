@@ -113,6 +113,9 @@ public class HotelDetailsFragment extends Fragment implements OnMapReadyCallback
 
         binding.reserveBtn.setOnClickListener(v -> {
             BookingOptionsPickFragment fragment = new BookingOptionsPickFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("detailsMap", detailsMap);
+            fragment.setArguments(bundle);
 
             requireActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
