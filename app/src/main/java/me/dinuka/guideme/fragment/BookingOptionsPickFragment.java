@@ -50,7 +50,6 @@ public class BookingOptionsPickFragment extends Fragment {
     int room_count;
     Date dateIn;
     Date dateOut;
-    ArrayList<Integer> selectedFacilities = new ArrayList<>();
     private List<RoomType> roomTypeList;
     RoomTypeSelectAdapter adapter;
     RoomType selectedRoomType;
@@ -82,6 +81,10 @@ public class BookingOptionsPickFragment extends Fragment {
             public void handleOnBackPressed() {
                 requireActivity().getSupportFragmentManager().popBackStack();
             }
+        });
+
+        binding.backBtn.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
         });
 
         storage = FirebaseStorage.getInstance();
@@ -158,7 +161,7 @@ public class BookingOptionsPickFragment extends Fragment {
         binding.bHotelLocation.setText(locationName);
         binding.bHotelRating.setText(String.valueOf(rating));
         binding.bHotelRatingBar.setRating((float) rating);
-        binding.hotelBookingSubtotal.setText("$ " + price);
+        binding.hotelBookingSubtotal.setText("$ " + String.format("%.2f",price));
 
         List<String> images = (List<String>) detailsMap.get("imageUris");
         String imageUrl = images.get(0);
@@ -208,12 +211,12 @@ public class BookingOptionsPickFragment extends Fragment {
 
     private void loadPaymentDetails() {
         double bookingCommisonPrecentage = 5;
-        bookingFee = price * bookingCommisonPrecentage / 100;
+        bookingFee = Math.round((price * bookingCommisonPrecentage) / 100);
 
-        binding.hotelBookingFee.setText("$ " + bookingFee);
+        binding.hotelBookingFee.setText("$ " + String.format("%.2f",bookingFee));
 
         double total = price + bookingFee;
-        binding.hotelBookingTotal.setText("$ " + total);
+        binding.hotelBookingTotal.setText("$ " + String.format("%.2f",total));
     }
 
     public void showDateRangePicker() {
