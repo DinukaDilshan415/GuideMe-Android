@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit;
-    private static final String ngrokURL = "https://2795-2402-d000-a400-2e01-157e-41f2-c3be-e867.ngrok-free.app";
+    private static final String ngrokURL = "https://0986-2402-d000-a400-11de-dc66-387e-23af-89da.ngrok-free.app";
     public static final String BASE_URL = ngrokURL+"/guide_me/";
     /// physical device ==> open cmd -> ipconfig -> IPv4 Address ==> [...](http://192.168.8.142:8080/api/v1)
 

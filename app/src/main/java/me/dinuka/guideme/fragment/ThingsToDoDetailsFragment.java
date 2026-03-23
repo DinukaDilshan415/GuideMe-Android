@@ -102,12 +102,15 @@ public class ThingsToDoDetailsFragment extends Fragment implements OnMapReadyCal
         recyclerView1.setAdapter(reviewListingAdapter1);
 
         binding.reserveBtn.setOnClickListener(v -> {
-//            BookingOptionsPickFragment fragment = new BookingOptionsPickFragment();
-//
-//            requireActivity().getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.fragment_container, fragment)
-//                    .addToBackStack(null)
-//                    .commit();
+            ThingsToDoBookingOptionsPickFragment fragment = new ThingsToDoBookingOptionsPickFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("detailsMap", detailsMap);
+            fragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         binding.backBtn.setOnClickListener(v -> {

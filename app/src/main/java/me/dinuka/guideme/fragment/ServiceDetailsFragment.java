@@ -111,12 +111,15 @@ public class ServiceDetailsFragment extends Fragment implements OnMapReadyCallba
         recyclerView1.setAdapter(reviewListingAdapter1);
 
         binding.reserveBtn.setOnClickListener(v -> {
-//            BookingOptionsPickFragment fragment = new BookingOptionsPickFragment();
-//
-//            requireActivity().getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.fragment_container, fragment)
-//                    .addToBackStack(null)
-//                    .commit();
+            ServiceBookingOptionsPickFragment fragment = new ServiceBookingOptionsPickFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("detailsMap", detailsMap);
+            fragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         binding.backBtn.setOnClickListener(v -> {

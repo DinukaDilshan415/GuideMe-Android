@@ -16,6 +16,7 @@
         android:paddingVertical="12dp">
 
         <ImageButton
+            android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -107,7 +108,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_weight="1"
-                            android:text="Ella dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                            android:text="Ella "
                             android:textSize="12sp" />
 
                         <RatingBar
@@ -180,7 +181,7 @@
                             android:id="@+id/hotelCheckInDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Fri, mar 13"
+                            android:text="Select In Date"
                             android:textSize="16sp" />
 
                         <TextView
@@ -192,7 +193,7 @@
                             android:id="@+id/hotwlCheckOutDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Fri, mar 13"
+                            android:text="Select Out Date"
                             android:textSize="16sp" />
 
                     </LinearLayout>
