@@ -14,4 +14,6 @@ public interface HotelApi {
     @GET("hotels/{key}")
     Call<List<HashMap<String, Object>>> getMainHotels(@Path("key") String key);
 
+    @POST("hotels/checkavailability")
+    Call<HashMap<String, Object>> checkAvailability(@Body HashMap<String, Object> hashMap);
 }
