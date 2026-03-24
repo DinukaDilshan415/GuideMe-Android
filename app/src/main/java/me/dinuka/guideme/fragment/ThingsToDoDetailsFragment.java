@@ -24,6 +24,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
 
@@ -34,13 +36,23 @@ import java.util.List;
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.adapter.ListingSliderAdapter;
 import me.dinuka.guideme.adapter.ReviewListingAdapter;
+import me.dinuka.guideme.api.UserApi;
+import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.FragmentThingsToDoDetailsBinding;
+import me.dinuka.guideme.dto.UserAddressDTO;
+import me.dinuka.guideme.dto.UserDTO;
 import me.dinuka.guideme.model.Review;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 
 public class ThingsToDoDetailsFragment extends Fragment implements OnMapReadyCallback {
     private FragmentThingsToDoDetailsBinding binding;
     private HashMap<String, Object> detailsMap;
+    private FirebaseAuth firebaseAuth;
     List<String> listingImages = new ArrayList<>();
     private FirebaseStorage storage;
     private Gson gson = new Gson();
@@ -69,6 +81,7 @@ public class ThingsToDoDetailsFragment extends Fragment implements OnMapReadyCal
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
 
         mapView = binding.dMapView;
@@ -102,15 +115,17 @@ public class ThingsToDoDetailsFragment extends Fragment implements OnMapReadyCal
         recyclerView1.setAdapter(reviewListingAdapter1);
 
         binding.reserveBtn.setOnClickListener(v -> {
-            ThingsToDoBookingOptionsPickFragment fragment = new ThingsToDoBookingOptionsPickFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("detailsMap", detailsMap);
-            fragment.setArguments(bundle);
 
-            requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+            if (currentUser == null) {
+                new Sweetalert(requireContext(), Sweetalert.WARNING_TYPE)
+                        .setTitleText("Warning")
+                        .setContentText("Please login to continue")
+                        .show();
+            } else {
+                checkUserEligibility(currentUser.getEmail());
+            }
         });
 
         binding.backBtn.setOnClickListener(v -> {
@@ -129,6 +144,86 @@ public class ThingsToDoDetailsFragment extends Fragment implements OnMapReadyCal
             intent.setData(Uri.parse("mailto:" + binding.dPartnerEmail.getText().toString().trim()));
 
             startActivity(intent);
+        });
+    }
+
+    private void checkUserEligibility(String email) {
+        loadCurrentData(email);
+    }
+
+    private void loadCurrentData(String email) {
+        Retrofit retrofit = RetrofitClient.getInstance(getContext());
+        UserApi userApi = retrofit.create(UserApi.class);
+
+        Call<UserDTO> currentUserCall = userApi.getCurrentUser(email);
+        currentUserCall.enqueue(new Callback<UserDTO>() {
+            @Override
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                if (response.isSuccessful()) {
+                    UserDTO userDTO = response.body();
+
+                    if (userDTO.getMobile().equals("empty")
+                            || userDTO.getImageUrl().equals("empty")
+                            || userDTO.getCountry().equals("empty")
+                            || userDTO.getStatusId() != 1) {
+
+                        new Sweetalert(requireContext(), Sweetalert.WARNING_TYPE)
+                                .setTitleText("Warning")
+                                .setContentText("Complete Your Personal Details To Continue")
+                                .show();
+                    } else {
+                        loadCurrentAddressData(email);
+                    }
+                } else {
+                    Log.e("ThingsToDoDetailsFragment", "Error fetching : " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+                Log.e("ThingsToDoDetailsFragment", "Error fetching : ", t);
+            }
+        });
+    }
+
+    private void loadCurrentAddressData(String email) {
+        Retrofit retrofit = RetrofitClient.getInstance(getContext());
+        UserApi userApi = retrofit.create(UserApi.class);
+
+        Call<UserAddressDTO> currentUserCall = userApi.getCurrentUserAddress(email);
+        currentUserCall.enqueue(new Callback<UserAddressDTO>() {
+            @Override
+            public void onResponse(Call<UserAddressDTO> call, Response<UserAddressDTO> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+
+                        ThingsToDoBookingOptionsPickFragment fragment = new ThingsToDoBookingOptionsPickFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("detailsMap", detailsMap);
+                        fragment.setArguments(bundle);
+
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .addToBackStack(null)
+                                .commit();
+
+                    } else if (response.code() == 204) {
+                        new Sweetalert(requireContext(), Sweetalert.WARNING_TYPE)
+                                .setTitleText("Warning")
+                                .setContentText("Complete Your Address To Continue")
+                                .show();
+                    } else {
+                        Log.e("ThingsToDoDetailsFragment", "Error fetching : " + response);
+                    }
+                } else {
+                    Log.e("ThingsToDoDetailsFragment", "Error fetching : " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserAddressDTO> call, Throwable t) {
+                Log.e("ThingsToDoDetailsFragment", "Error fetching : ", t);
+            }
         });
     }
 
