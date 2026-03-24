@@ -20,9 +20,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
@@ -378,6 +380,9 @@ public class BookingOptionsPickFragment extends Fragment {
                             .replace(R.id.fragment_container, new MyBookingsFragment())
                             .addToBackStack(null)
                             .commit();
+
+                    BottomNavigationView navigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+                    navigationView.getMenu().getItem(2).setChecked(true);
                 } else {
                     Log.e("BookingOptionsPickFragment", "Error: " + response);
                 }
