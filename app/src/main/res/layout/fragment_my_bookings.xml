@@ -70,12 +70,52 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <RelativeLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        >
+
+        <ImageView
+            android:id="@+id/loadingImage"
+            android:layout_width="match_parent"
+            android:layout_height="700dp"
+            android:src="@drawable/loadingbuffering"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/noContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:padding="16dp"
+            android:text="You Not Have Any Bookings To View"
+            android:textSize="28sp"
+            android:textColor="@color/md_theme_secondary"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:gravity="center"
+
+            />
+
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/my_bookings_not_logged_design"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
+        android:visibility="gone"
         >
 
         <TextView

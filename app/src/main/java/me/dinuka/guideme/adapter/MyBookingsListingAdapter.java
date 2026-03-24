@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -41,16 +42,53 @@ public class MyBookingsListingAdapter extends RecyclerView.Adapter<MyBookingsLis
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MyBooking myBooking = myBookings.get(position);
-        holder.myBookingName.setText(myBooking.getName());
-        holder.myBiikingPrice.setText("$ " +String.valueOf(myBooking.getPrice()));
+
+        String category = myBooking.getCategory();
+        int categoryIcon = R.drawable.hotel_svgrepo_com;
+
         holder.myBookingDatetime.setText(myBooking.getDatetime());
-        holder.myBiikinglocation.setText(myBooking.getLocation());
-        holder.my_booking_rating_bar.setRating((float) myBooking.getRating());
-        holder.my_booking_rating.setText(String.valueOf(myBooking.getRating()));
+        holder.myBookingNumber.setText(myBooking.getBookingId());
+        holder.myBookingName.setText(myBooking.getName());
+        holder.myBookingStatus.setText(myBooking.getStatus());
+        holder.myBookinglocation.setText(myBooking.getLocation());
+
         holder.myBookingCheckInDate.setText(myBooking.getCheckInDate());
         holder.MyBookingCheckOutDate.setText(myBooking.getCheckOutDate());
-        holder.myBookingCountAdult.setText(String.valueOf(myBooking.getAdults())+ " Adult");
-        holder.myBookingCountChild.setText(String.valueOf(myBooking.getChildren())+ " Children");
+        holder.myBookingDate.setText(myBooking.getCheckInDate());
+        holder.myBookingCountAdult.setText(myBooking.getAdults() + " Adult");
+        holder.myBookingCountChild.setText(myBooking.getChildren() + " Children");
+        holder.myBookingCountGuests.setText(myBooking.getAdults() + " Guests");
+
+        if (category.equals("Hotels")){
+            categoryIcon = R.drawable.hotel_svgrepo_com;
+            holder.hotelDateLayout.setVisibility(View.VISIBLE);
+            holder.nonHotelDateLayout.setVisibility(View.GONE);
+            holder.hotelGuestLayout.setVisibility(View.VISIBLE);
+            holder.nonHotelGuestLayout.setVisibility(View.GONE);
+
+            holder.myBookingPrice.setText("$ " +myBooking.getPrice()+ " / per night");
+
+        } else if (category.equals("Things To Do")){
+            categoryIcon = R.drawable.things_to_do;
+            holder.hotelDateLayout.setVisibility(View.GONE);
+            holder.nonHotelDateLayout.setVisibility(View.VISIBLE);
+            holder.hotelGuestLayout.setVisibility(View.GONE);
+            holder.nonHotelGuestLayout.setVisibility(View.VISIBLE);
+
+            holder.myBookingPrice.setText("$ " +myBooking.getPrice());
+
+        } else if (category.equals("Services")) {
+            categoryIcon = R.drawable.service_svgrepo_com;
+            holder.hotelDateLayout.setVisibility(View.GONE);
+            holder.nonHotelDateLayout.setVisibility(View.VISIBLE);
+            holder.hotelGuestLayout.setVisibility(View.GONE);
+            holder.nonHotelGuestLayout.setVisibility(View.VISIBLE);
+
+            holder.myBookingPrice.setText("$ " +myBooking.getPrice());
+        }
+
+        holder.bookingCategory.setText(category);
+        holder.bookingCategoryIcon.setImageResource(categoryIcon);
 
         Glide.with(holder.itemView.getContext())
                 .load(myBooking.getImages())
@@ -75,34 +113,51 @@ public class MyBookingsListingAdapter extends RecyclerView.Adapter<MyBookingsLis
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView myBookingImage;
+        TextView myBookingNumber;
         TextView myBookingName;
-        TextView myBiikingPrice;
+        TextView myBookingPrice;
         TextView myBookingDatetime;
-        TextView myBiikinglocation;
-        RatingBar my_booking_rating_bar;
-        TextView my_booking_rating;
+        TextView myBookinglocation;
         TextView myBookingCheckInDate;
         TextView MyBookingCheckOutDate;
+        TextView myBookingDate;
+        TextView myBookingCountGuests;
         TextView myBookingCountAdult;
         TextView myBookingCountChild;
+        TextView myBookingStatus;
+        ImageView bookingCategoryIcon;
+        TextView bookingCategory;
         Button myBookingReviewBtn;
-
-
+        TextView bookingStatus;
+        LinearLayout hotelDateLayout;
+        LinearLayout nonHotelDateLayout;
+        LinearLayout hotelGuestLayout;
+        LinearLayout nonHotelGuestLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            myBookingNumber = itemView.findViewById(R.id.mybookingNumber);
             myBookingImage = itemView.findViewById(R.id.myBookingImage);
             myBookingName = itemView.findViewById(R.id.mybookingName);
-            myBiikingPrice = itemView.findViewById(R.id.myBiikingPrice);
+            myBookingPrice = itemView.findViewById(R.id.myBookingPrice);
             myBookingDatetime = itemView.findViewById(R.id.myBookingDatetime);
-            myBiikinglocation = itemView.findViewById(R.id.myBiikinglocation);
-            my_booking_rating_bar = itemView.findViewById(R.id.my_booking_rating_bar);
-            my_booking_rating = itemView.findViewById(R.id.my_booking_rating);
+            myBookinglocation = itemView.findViewById(R.id.myBookinglocation);
             myBookingCheckInDate = itemView.findViewById(R.id.myBookingCheckInDate);
             MyBookingCheckOutDate = itemView.findViewById(R.id.MyBookingCheckOutDate);
             myBookingCountAdult = itemView.findViewById(R.id.myBookingCountAdult);
             myBookingCountChild = itemView.findViewById(R.id.myBookingCountChild);
             myBookingReviewBtn = itemView.findViewById(R.id.myBookingReviewBtn);
+            bookingCategoryIcon = itemView.findViewById(R.id.bookingCategoryIcon);
+            bookingCategory = itemView.findViewById(R.id.bookingCategory);
+            myBookingStatus = itemView.findViewById(R.id.bookingStatus);
+            myBookingDate = itemView.findViewById(R.id.myBookingDate);
+            myBookingCountGuests = itemView.findViewById(R.id.myBookingCountGuests);
+            bookingStatus = itemView.findViewById(R.id.bookingStatus);
+
+            hotelDateLayout = itemView.findViewById(R.id.hotelDateLayout);
+            nonHotelDateLayout = itemView.findViewById(R.id.nonHotelDateLayout);
+            hotelGuestLayout = itemView.findViewById(R.id.hotelGuestLayout);
+            nonHotelGuestLayout = itemView.findViewById(R.id.nonHotelGuestLayout);
         }
     }
 

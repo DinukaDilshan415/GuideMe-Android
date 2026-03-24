@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MyBooking {
-    private String id;
+    private int id;
+    private String bookingId;
     private String name;
     private double price;
     private String location;
@@ -23,4 +24,6 @@ public class MyBooking {
     private int adults;
     private int children;
     private String datetime;
+    private String category;
+    private String status;
 }

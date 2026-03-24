@@ -19,8 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,44 +29,42 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="4dp"
                     android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    >
+                    android:orientation="vertical"
+                    android:padding="4dp">
 
-                    <ImageView
-                        android:id="@+id/listingCategoryIcon"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/hotel_svgrepo_com" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/bookingCategoryIcon"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/hotel_svgrepo_com" />
+
+                        <TextView
+                            android:id="@+id/bookingCategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:text="Hotel"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/listingCategory"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/myBookingDatetime"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_weight="1"
-                        android:text="Hotel"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/myBookingDatetime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:paddingHorizontal="12dp"
-                    android:text="2026-08-21 9:00 AM"/>
+                        android:layout_marginTop="2dp"
+                        android:paddingHorizontal="12dp"
+                        android:text="2026-08-21 9:00 AM" />
 
                 </LinearLayout>
 
@@ -75,13 +72,12 @@
                     android:id="@+id/myBookingReviewBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    app:cornerRadius="10dp"
                     android:layout_margin="8dp"
                     android:background="@drawable/counter_border"
-                    app:backgroundTint="#ffffff"
-                    android:textColor="@color/md_theme_primary"
                     android:text="Write A Review"
-                    />
+                    android:textColor="@color/md_theme_primary"
+                    app:backgroundTint="#ffffff"
+                    app:cornerRadius="10dp" />
 
             </LinearLayout>
 
@@ -94,29 +90,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="4dp"
-                android:orientation="horizontal">
-            <TextView
-                android:id="@+id/mybookingNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="#122324324"
-                android:layout_marginStart="4dp"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:paddingVertical="4dp">
 
                 <TextView
-                    android:id="@+id/listingStatus"
+                    android:id="@+id/mybookingNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:text="#122324324"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/bookingStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="2dp"
-                    android:paddingHorizontal="10dp"
-                    android:text="Active"
-                    android:textColor="@color/md_theme_primary"
-                    android:textAlignment="textEnd"
                     android:layout_marginHorizontal="8dp"
                     android:background="@drawable/custom_input_search"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="2dp"
+                    android:text="Active"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/md_theme_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -125,8 +122,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="6dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingHorizontal="6dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/myBookingImage"
@@ -134,8 +131,8 @@
                     android:layout_height="170dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    app:shapeAppearanceOverlay="@style/ListingImage"
-                    android:src="@drawable/sample1"/>
+                    android:src="@drawable/sample1"
+                    app:shapeAppearanceOverlay="@style/ListingImage" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -168,7 +165,7 @@
                                 android:src="@drawable/location_on_24px" />
 
                             <TextView
-                                android:id="@+id/myBiikinglocation"
+                                android:id="@+id/myBookinglocation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
@@ -176,31 +173,11 @@
                                 android:text="Ella"
                                 android:textSize="13sp" />
 
-                            <RatingBar
-                                android:id="@+id/my_booking_rating_bar"
-                                style="?android:attr/ratingBarStyleSmall"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:progressTint="#FFC107"
-                                android:rating="4.5"
-                                android:visibility="gone"/>
-
-                            <TextView
-                                android:id="@+id/my_booking_rating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5dp"
-                                android:background="@drawable/bg_rating"
-                                android:padding="4dp"
-                                android:text="4.5"
-                                android:textColor="@color/md_theme_onPrimary"
-                                android:textStyle="bold" />
-
                         </LinearLayout>
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/myBiikingPrice"
+                        android:id="@+id/myBookingPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -222,10 +199,12 @@
                             android:src="@drawable/calendar_month_24px" />
 
                         <LinearLayout
+                            android:id="@+id/hotelDateLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="2dp"
+                            android:visibility="visible"
                             android:orientation="horizontal">
 
                             <TextView
@@ -249,6 +228,24 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/nonHotelDateLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="2dp"
+                            android:visibility="gone"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/myBookingDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Fri, mar 13"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -265,9 +262,11 @@
                             android:src="@drawable/guest_24px" />
 
                         <LinearLayout
+                            android:id="@+id/hotelGuestLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
+                            android:visibility="visible"
                             android:orientation="horizontal">
 
                             <TextView
@@ -288,7 +287,22 @@
                                 android:layout_height="wrap_content"
                                 android:text="1 child"
                                 android:textSize="13sp" />
+                        </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/nonHotelGuestLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:visibility="gone"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/myBookingCountGuests"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2 adult"
+                                android:textSize="13sp" />
                         </LinearLayout>
 
                     </LinearLayout>
