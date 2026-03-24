@@ -20,12 +20,9 @@ import com.hbb20.CountryCodePicker;
 import java.util.HashMap;
 
 import me.dinuka.guideme.R;
-import me.dinuka.guideme.api.PartnerApi;
 import me.dinuka.guideme.api.UserApi;
 import me.dinuka.guideme.client.RetrofitClient;
 import me.dinuka.guideme.databinding.FragmentUserPersonalDetailsBinding;
-import me.dinuka.guideme.dto.PartnerAddressDTO;
-import me.dinuka.guideme.dto.PartnerDTO;
 import me.dinuka.guideme.dto.UserAddressDTO;
 import me.dinuka.guideme.dto.UserDTO;
 import retrofit2.Call;

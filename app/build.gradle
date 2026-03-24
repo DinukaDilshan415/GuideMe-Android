@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.google.maps:google-maps-services:2.2.0'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
     implementation("com.tbuonomo:dotsindicator:5.1.0")
+    implementation 'com.github.PayHereDevs:payhere-android-sdk:v3.0.18'
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity

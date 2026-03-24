@@ -512,10 +512,19 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Price"
+                            android:textSize="16sp"
+                            />
+
+                        <TextView
+                            android:id="@+id/nightCount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Price"
+                            android:text="(1 Night)"
+                            android:layout_marginStart="4dp"
                             android:textSize="16sp"
                             />
 
