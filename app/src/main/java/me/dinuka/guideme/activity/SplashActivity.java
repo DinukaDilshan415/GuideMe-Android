@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.bumptech.glide.Glide;
 
 import me.dinuka.guideme.R;
+import me.dinuka.guideme.helper.WishlistHelper;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -68,6 +69,7 @@ public class SplashActivity extends AppCompatActivity {
 
 //                        Intent intent  = new Intent(SplashActivity.this, MapsActivity.class);
 
+//                        WishlistHelper.clearWishlist(SplashActivity.this);
                         startActivity(intent);
                         finish();
                     }
