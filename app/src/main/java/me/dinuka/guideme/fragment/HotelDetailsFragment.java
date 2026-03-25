@@ -51,6 +51,7 @@ import me.dinuka.guideme.dto.PartnerAddressDTO;
 import me.dinuka.guideme.dto.PartnerDTO;
 import me.dinuka.guideme.dto.UserAddressDTO;
 import me.dinuka.guideme.dto.UserDTO;
+import me.dinuka.guideme.helper.WishlistHelper;
 import me.dinuka.guideme.model.Facility;
 import me.dinuka.guideme.model.Review;
 import retrofit2.Call;
@@ -145,9 +146,34 @@ public class HotelDetailsFragment extends Fragment implements OnMapReadyCallback
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
+        binding.addWishListBtn.setOnClickListener(v -> {
+            List<HashMap<String, Object>> wishlist = WishlistHelper.getWishlist(getContext());
+
+            if (wishlist.isEmpty()) {
+                wishlist.add(detailsMap);
+                WishlistHelper.saveWishlist(getContext(), wishlist);
+                Toast.makeText(getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
+            } else {
+                for (HashMap<String, Object> item : wishlist) {
+                    int id = ((Number) item.get("l_id")).intValue();
+                    int thisId = ((Number) detailsMap.get("l_id")).intValue();
+
+                    if (id == thisId) {
+                        Toast.makeText(getContext(), "Already in wishlist", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                wishlist.add(detailsMap);
+                WishlistHelper.saveWishlist(getContext(), wishlist);
+                Toast.makeText(getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
         binding.callBtn.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:"+binding.dPartnerMobile.getText().toString().trim()));
+            intent.setData(Uri.parse("tel:" + binding.dPartnerMobile.getText().toString().trim()));
             startActivity(intent);
         });
 
