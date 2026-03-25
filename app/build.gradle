@@ -44,6 +44,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation libs.play.services.maps
+    implementation libs.firebase.messaging
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
     implementation("com.tbuonomo:dotsindicator:5.1.0")
