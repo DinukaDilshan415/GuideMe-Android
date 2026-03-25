@@ -1,5 +1,10 @@
 package me.dinuka.guideme.fragment;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -11,14 +16,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -36,6 +46,7 @@ public class HomeFragment extends Fragment {
     private DrawerLayout drawerLayout;
     private EditText searchBar;
     private CategoryMenusBinding categoryMenusBinding;
+    private static final String APP_DATA = "my_current_data";
 
 
     @Override
@@ -54,6 +65,33 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        SharedPreferences currentsharedPreferences = requireContext().getSharedPreferences(APP_DATA, Context.MODE_PRIVATE);
+        String currentlocationName = currentsharedPreferences.getString("locationName", null);
+        float currentlatitude = currentsharedPreferences.getFloat("latitude", 0);
+        float currentlongitude = currentsharedPreferences.getFloat("longitude", 0);
+
+        if (currentlocationName != null && currentlatitude != 0 && currentlongitude != 0){
+            binding.locationTag.setText(currentlocationName);
+        }
+
+        getParentFragmentManager().setFragmentResultListener("requestKey", getViewLifecycleOwner(), (requestKey, bundle) -> {
+            String locationName = bundle.getString("locationName");
+            double latitude = bundle.getDouble("latitude");
+            double longitude = bundle.getDouble("longitude");
+
+            if (locationName != null && latitude != 0 && longitude != 0){
+                SharedPreferences sharedPreferences = requireContext().getSharedPreferences(APP_DATA, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("locationName", locationName);
+                editor.putFloat("latitude", (float) latitude);
+                editor.putFloat("longitude", (float) longitude);
+                editor.apply();
+                Log.i("HomeFragment", "Loacation Details Saved in SharedPreferences");
+            }
+
+            binding.locationTag.setText(locationName);
+        });
+
         drawerLayout = binding.homeDrawerLayout;
         ImageView searchIcon = binding.searchIconOnHome;
         ImageView notificationIcon = binding.notificationIconOnHome;
@@ -63,7 +101,7 @@ public class HomeFragment extends Fragment {
             if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
                 drawerLayout.closeDrawer(GravityCompat.END);
             } else {
-              drawerLayout.openDrawer(GravityCompat.END);
+                drawerLayout.openDrawer(GravityCompat.END);
             }
         });
 
@@ -89,6 +127,7 @@ public class HomeFragment extends Fragment {
             public void onDrawerOpened(View drawerView) {
                 callback.setEnabled(true);
             }
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 callback.setEnabled(false);
@@ -96,6 +135,14 @@ public class HomeFragment extends Fragment {
         });
 
         createCategoryMenu();
+
+        binding.changeLocationBtn.setOnClickListener(v -> {
+            CustomDialogFragment dialog = new CustomDialogFragment();
+            if (currentlocationName != null && currentlatitude != 0 && currentlongitude != 0){
+                dialog = new CustomDialogFragment(currentlocationName, currentlatitude, currentlongitude);
+            }
+            dialog.show(getParentFragmentManager(), "ShareDialog");
+        });
 
     }
 
@@ -121,10 +168,17 @@ public class HomeFragment extends Fragment {
         Fragment selectedFragment;
 
         switch (id) {
-            case 0: selectedFragment = new HotelsFragment(); break;
-            case 1: selectedFragment = new ThingsToDoFragment(); break;
-            case 2: selectedFragment = new ServicesFragment(); break;
-            default: selectedFragment = new HotelsFragment();
+            case 0:
+                selectedFragment = new HotelsFragment();
+                break;
+            case 1:
+                selectedFragment = new ThingsToDoFragment();
+                break;
+            case 2:
+                selectedFragment = new ServicesFragment();
+                break;
+            default:
+                selectedFragment = new HotelsFragment();
         }
 
         getChildFragmentManager().beginTransaction()
