@@ -32,7 +32,7 @@
                android:id="@+id/locationTag"
                android:layout_width="0dp"
                android:layout_height="wrap_content"
-               android:text="Kandy, Sri lanka"
+               android:text="Select Your Location"
                android:paddingStart="5dp"
                android:textSize="16sp"
                android:layout_weight="1"
@@ -74,6 +74,7 @@
            />
 
        <Button
+           android:id="@+id/changeLocationBtn"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:text="Change Location"
