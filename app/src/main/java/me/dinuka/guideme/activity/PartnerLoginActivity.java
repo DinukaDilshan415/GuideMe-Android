@@ -35,6 +35,7 @@ public class PartnerLoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     GetCredentialRequest request;
+    private String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,27 @@ public class PartnerLoginActivity extends AppCompatActivity {
             Intent intent = new Intent(PartnerLoginActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
+        });
+
+        binding.textForgotPassword.setOnClickListener(v -> {
+            if (!binding.inputPartnerLoginEmail.getText().toString().trim().isEmpty()) {
+                firebaseAuth.sendPasswordResetEmail(binding.inputPartnerLoginEmail.getText().toString().trim())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    new Sweetalert(PartnerLoginActivity.this, Sweetalert.SUCCESS_TYPE)
+                                            .setTitleText("Success")
+                                            .setContentText("Password reset email sent to your email.")
+                                            .show();
+                                    Log.d(TAG, "Email sent.");
+                                }
+                            }
+                        });
+            } else {
+                binding.emailInput.setError("Please enter your email");
+                binding.emailInput.requestFocus();
+            }
         });
 
         binding.partnerLoginBtn.setOnClickListener(v -> {

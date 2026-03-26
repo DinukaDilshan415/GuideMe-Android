@@ -1,5 +1,7 @@
 package me.dinuka.guideme.activity;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     GetCredentialRequest request;
+    private String TAG = this.getClass().getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,27 @@ public class LoginActivity extends AppCompatActivity {
 
         binding.btnGoogle.setOnClickListener(v -> {
             startGoogleSignIn();
+        });
+
+        binding.textForgotPassword.setOnClickListener(v -> {
+            if (!binding.inputLoginEmail.getText().toString().trim().isEmpty()){
+                firebaseAuth.sendPasswordResetEmail(binding.inputLoginEmail.getText().toString().trim())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    new Sweetalert(LoginActivity.this, Sweetalert.SUCCESS_TYPE)
+                                            .setTitleText("Success")
+                                            .setContentText("Password reset email sent to your email.")
+                                            .show();
+                                    Log.d(TAG, "Email sent.");
+                                }
+                            }
+                        });
+            } else {
+                binding.emailInput.setError("Please enter your email");
+                binding.emailInput.requestFocus();
+            }
         });
 
         binding.loginBtn.setOnClickListener(v -> {
