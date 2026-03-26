@@ -184,6 +184,20 @@ public class HotelDetailsFragment extends Fragment implements OnMapReadyCallback
 
             startActivity(intent);
         });
+
+        binding.seeMapBtn.setOnClickListener(v -> {
+            DirectionMapViewFragment fragment = new DirectionMapViewFragment();
+            Bundle bundle = new Bundle();
+            bundle.putDouble("latitude", latitude);
+            bundle.putDouble("longitude", longitude);
+            bundle.putString("locationName", locationName);
+            fragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 
     private void checkUserEligibility(String email) {
