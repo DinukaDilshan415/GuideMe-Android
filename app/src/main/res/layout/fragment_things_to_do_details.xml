@@ -178,7 +178,7 @@
                         android:layout_marginBottom="8dp"
                         android:text="Open Map"
                         android:textColor="@color/md_theme_secondary"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
