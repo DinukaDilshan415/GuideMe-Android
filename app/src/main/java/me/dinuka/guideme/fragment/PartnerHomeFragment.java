@@ -49,7 +49,7 @@ import taimoor.sultani.sweetalert2.Sweetalert;
 public class PartnerHomeFragment extends Fragment {
 
     private FragmentPartnerHomeBinding binding;
-
+    private String TAG = this.getClass().getSimpleName();
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
     List<Listing> listings = new ArrayList<>();
@@ -96,7 +96,15 @@ public class PartnerHomeFragment extends Fragment {
         listingCall.enqueue(new Callback<List<HashMap<String, Object>>>() {
             @Override
             public void onResponse(Call<List<HashMap<String, Object>>> call, Response<List<HashMap<String, Object>>> response) {
+
+                if (response.code() == 204){
+                    binding.loadingLayout.setVisibility(View.GONE);
+                    binding.noContentLayout.setVisibility(View.VISIBLE);
+                    return;
+                }
+
                 if (response.isSuccessful() && response.body() != null) {
+
                     List<HashMap<String, Object>> responseBody = response.body();
 
                     int totalItems = responseBody.size();
@@ -230,10 +238,7 @@ public class PartnerHomeFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
 
-                        requireActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.partner_fragment_container, new ListingCategorySelectFragment())
-                                .addToBackStack(null)
-                                .commit();
+                        checkPartnership(email);
 
                     } else if (response.code() == 204) {
                         new Sweetalert(requireContext(), Sweetalert.WARNING_TYPE)
@@ -251,6 +256,48 @@ public class PartnerHomeFragment extends Fragment {
             @Override
             public void onFailure(Call<PartnerAddressDTO> call, Throwable t) {
                 Log.e("PartnerHomeFragment", "Error fetching : ", t);
+            }
+        });
+    }
+
+    private void checkPartnership(String email) {
+        Retrofit instance = RetrofitClient.getInstance(requireContext());
+        PartnerApi partnerApi = instance.create(PartnerApi.class);
+
+        Call<HashMap<String, Object>> partnerDTOCall = partnerApi.checkPartnership(email);
+
+        partnerDTOCall.enqueue(new Callback<HashMap<String, Object>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
+                if (response.isSuccessful()) {
+
+                    if (response.code() == 200) {
+
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.partner_fragment_container, new ListingCategorySelectFragment())
+                                .addToBackStack(null)
+                                .commit();
+
+                    } else if (response.code() == 204) {
+
+                        new Sweetalert(requireContext(), Sweetalert.WARNING_TYPE)
+                                .setTitleText("Warning")
+                                .setContentText("Upgrade Your Partnership Plan To Add More Listings")
+                                .show();
+
+                    } else {
+                        Log.e(TAG, "Error: " + response);
+                    }
+
+                    Log.d(TAG, "Response: " + response);
+                } else {
+                    Log.e(TAG, "Error: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, Object>> call, Throwable t) {
+                Log.e(TAG, "Error: " + t.getMessage());
             }
         });
     }
