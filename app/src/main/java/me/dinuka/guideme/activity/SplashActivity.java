@@ -64,10 +64,11 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+
 //                        Intent intent = new Intent(SplashActivity.this, PartnerMainActivity.class);
 //                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
 
-//                        Intent intent  = new Intent(SplashActivity.this, MapsActivity.class);
+//                        Intent intent = new Intent(SplashActivity.this, CompassActivity.class);
 
 //                        WishlistHelper.clearWishlist(SplashActivity.this);
                         startActivity(intent);

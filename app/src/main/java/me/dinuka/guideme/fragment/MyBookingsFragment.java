@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -56,6 +58,12 @@ public class MyBookingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ImageView imageView = binding.loadingImage;
+
+        Glide.with(this)
+                .load(R.drawable.loadingbuffering) // or R.raw.your_gif_file_name
+                .into(imageView);
 
         auth = FirebaseAuth.getInstance();
 
