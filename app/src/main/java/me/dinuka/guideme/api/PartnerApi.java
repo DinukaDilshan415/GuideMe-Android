@@ -18,6 +18,12 @@ public interface PartnerApi {
     @POST("partner/register")
     Call<HashMap<String, Object>> partnerRegister(@Body PartnerDTO partnerDTO);
 
+    @POST("partner/upgradeplan")
+    Call<HashMap<String, Object>> partnerUpgradePlan(@Body PartnerDTO partnerDTO);
+
+    @POST("partner/cancelplan")
+    Call<HashMap<String, Object>> partnerCancelPlan(@Body PartnerDTO partnerDTO);
+
     @POST("partner/saveorupdateaddress")
     Call<HashMap<String, Object>> partnerSaveOrUpdateAddress(@Body PartnerAddressDTO partnerAddressDTO);
 
@@ -36,4 +42,6 @@ public interface PartnerApi {
     @GET("partner/address/{email}")
     Call<PartnerAddressDTO> getCurrentPartnerAddress(@Path("email") String email);
 
+    @GET("partner/checkpartnership/{email}")
+    Call<HashMap<String, Object>> checkPartnership(@Path("email") String email);
 }

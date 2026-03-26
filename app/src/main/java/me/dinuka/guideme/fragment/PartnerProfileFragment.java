@@ -97,6 +97,18 @@ public class PartnerProfileFragment extends Fragment {
                     .commit();
         });
 
+        binding.partnershipLayout.setOnClickListener(v -> {
+            PartnershipFragment fragment = new PartnershipFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("currentTypeId", currentPartner.getPartnerTypeId());
+            fragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.partner_fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         getParentFragmentManager().setFragmentResultListener("requestKey", getViewLifecycleOwner(), (requestKey, bundle) -> {
             String imageUriString = bundle.getString("bundleKey");
             String updatedName = bundle.getString("updatedName");
