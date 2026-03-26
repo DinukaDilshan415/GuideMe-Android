@@ -1,7 +1,11 @@
 package me.dinuka.guideme.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,18 +29,24 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.databinding.ActivityMainBinding;
+import me.dinuka.guideme.fragment.CustomCompassFragment;
 import me.dinuka.guideme.fragment.HomeFragment;
 import me.dinuka.guideme.fragment.MyBookingsFragment;
 import me.dinuka.guideme.fragment.ProfileFragment;
 import me.dinuka.guideme.fragment.WishlistFragment;
+import me.dinuka.guideme.helper.ShakeDetector;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        NavigationBarView.OnItemSelectedListener{
+        NavigationBarView.OnItemSelectedListener {
 
     private ActivityMainBinding binding;
     private BottomNavigationView bottomNavigationView;
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -77,11 +87,22 @@ public class MainActivity extends AppCompatActivity implements
                         Log.d(TAG, "Token: " + token);
                     }
                 });
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+            @Override
+            public void onShake() {
+                showDialog();
+            }
+        });
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.d("MainActivity", "onNavigationItemSelected: "+item.getItemId());
+        Log.d("MainActivity", "onNavigationItemSelected: " + item.getItemId());
         Menu bottomNavMenu = bottomNavigationView.getMenu();
 
         for (int i = 0; i < bottomNavMenu.size(); i++) {
@@ -105,6 +126,20 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register the listener
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    protected void onPause() {
+        // Unregister to save battery!
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
+    }
+
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -118,5 +153,11 @@ public class MainActivity extends AppCompatActivity implements
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             }
         }
+    }
+
+    private void showDialog() {
+        CustomCompassFragment dialog = new CustomCompassFragment();
+        dialog.show(getSupportFragmentManager(), "CompassDialog");
+
     }
 }
