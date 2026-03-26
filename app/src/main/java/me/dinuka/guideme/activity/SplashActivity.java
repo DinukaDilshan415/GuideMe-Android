@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
@@ -17,16 +18,28 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.helper.WishlistHelper;
+import me.dinuka.guideme.model.User;
 
 public class SplashActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             getWindow().setDecorFitsSystemWindows(false);
@@ -63,16 +76,47 @@ public class SplashActivity extends AppCompatActivity {
                 .postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
 
+                        if (currentUser != null){
+                            String uid = currentUser.getUid();
+
+                            firebaseFirestore.collection("partners")
+                                    .document(uid)
+                                    .get()
+                                    .addOnSuccessListener(ds -> {
+                                        if (ds.exists()) {
+
+                                            Intent intent = new Intent(SplashActivity.this, PartnerMainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+
+                                        } else {
+                                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                            Log.e(TAG, "Partner data not found");
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e(TAG, "Error getting user data", e);
+                                    });
+                        } else {
+                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+//                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//
 //                        Intent intent = new Intent(SplashActivity.this, PartnerMainActivity.class);
 //                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-
+//
 //                        Intent intent = new Intent(SplashActivity.this, CompassActivity.class);
-
+//
 //                        WishlistHelper.clearWishlist(SplashActivity.this);
-                        startActivity(intent);
-                        finish();
+//                        startActivity(intent);
+//                        finish();
                     }
                 }, 2000);
 

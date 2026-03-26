@@ -73,6 +73,7 @@ public class MyBookingsFragment extends Fragment {
 
             loadMyBookings(auth.getCurrentUser().getEmail());
         } else {
+            binding.loadingLayout.setVisibility(View.GONE);
             binding.myBookingsLoggedDesign.setVisibility(View.GONE);
             binding.myBookingsNotLoggedDesign.setVisibility(View.VISIBLE);
         }
