@@ -15,6 +15,9 @@ public interface BookingApi {
     @GET("booking/{email}")
     Call<List<HashMap<String, Object>>> getUserBookings(@Path("email") String email);
 
+    @GET("booking/listingitem/{id}")
+    Call<List<HashMap<String, Object>>> getItemReserves(@Path("id") int id);
+
     @POST("booking/addnewbooking")
     Call<HashMap<String, Object>> addNewBooking(@Body HashMap<String, Object> hashMap);
 }

@@ -178,7 +178,16 @@ public class PartnerHomeFragment extends Fragment {
         PartnerListingAdapter adapter = new PartnerListingAdapter(listings, listing -> {
             Bundle bundle = new Bundle();
             bundle.putInt("listingId", listing.getId());
-            // Handle click...
+            bundle.putString("listingType", listing.getCategory());
+            bundle.putString("listingTitle", listing.getName());
+
+            MyReservesFragment fragment = new MyReservesFragment();
+            fragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.partner_fragment_container,fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         binding.partnerListingsRecyclerView.setAdapter(adapter);
