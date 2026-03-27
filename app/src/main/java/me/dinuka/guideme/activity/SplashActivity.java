@@ -1,6 +1,10 @@
 package me.dinuka.guideme.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +14,7 @@ import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import me.dinuka.guideme.R;
 import me.dinuka.guideme.helper.WishlistHelper;
 import me.dinuka.guideme.model.User;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -76,36 +82,47 @@ public class SplashActivity extends AppCompatActivity {
                 .postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        FirebaseUser currentUser = mAuth.getCurrentUser();
+                        if (isInternetAvailable(SplashActivity.this)){
 
-                        if (currentUser != null){
-                            String uid = currentUser.getUid();
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
 
-                            firebaseFirestore.collection("partners")
-                                    .document(uid)
-                                    .get()
-                                    .addOnSuccessListener(ds -> {
-                                        if (ds.exists()) {
+                            if (currentUser != null){
+                                String uid = currentUser.getUid();
 
-                                            Intent intent = new Intent(SplashActivity.this, PartnerMainActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                                firebaseFirestore.collection("partners")
+                                        .document(uid)
+                                        .get()
+                                        .addOnSuccessListener(ds -> {
+                                            if (ds.exists()) {
 
-                                        } else {
-                                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                            Log.e(TAG, "Partner data not found");
-                                        }
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.e(TAG, "Error getting user data", e);
-                                    });
+                                                Intent intent = new Intent(SplashActivity.this, PartnerMainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+
+                                            } else {
+                                                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                                Log.e(TAG, "Partner data not found");
+                                            }
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e(TAG, "Error getting user data", e);
+                                        });
+                            } else {
+                                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
                         } else {
-                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            new Sweetalert(SplashActivity.this, Sweetalert.WARNING_TYPE)
+                                    .setTitleText("Warning")
+                                    .setContentText("Device is not connected to the internet. Please connect to the internet and try again.")
+                                    .show();
                         }
+
+
 
 //                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 //
@@ -120,5 +137,21 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }, 2000);
 
+    }
+
+    public boolean isInternetAvailable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm != null) {
+            Network network = cm.getActiveNetwork();
+            if (network == null) return false;
+
+            NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
+            return capabilities != null &&
+                    (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
+        }
+        return false;
     }
 }
