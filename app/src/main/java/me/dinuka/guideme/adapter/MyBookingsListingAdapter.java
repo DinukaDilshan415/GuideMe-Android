@@ -1,5 +1,6 @@
 package me.dinuka.guideme.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import me.dinuka.guideme.R;
+import me.dinuka.guideme.fragment.AddReviewFragment;
 import me.dinuka.guideme.model.Hotel;
 import me.dinuka.guideme.model.MyBooking;
 
@@ -26,10 +28,12 @@ public class MyBookingsListingAdapter extends RecyclerView.Adapter<MyBookingsLis
 
     private List<MyBooking> myBookings;
     private OnListingItemClickListener listener;
+    private OnReviewBtnClickListener reviewBtnListener;
 
-    public MyBookingsListingAdapter(List<MyBooking> myBookings, OnListingItemClickListener listener) {
+    public MyBookingsListingAdapter(List<MyBooking> myBookings, OnListingItemClickListener listener, OnReviewBtnClickListener reviewBtnListener) {
         this.myBookings = myBookings;
         this.listener = listener;
+        this.reviewBtnListener = reviewBtnListener;
     }
 
     @NonNull
@@ -104,6 +108,15 @@ public class MyBookingsListingAdapter extends RecyclerView.Adapter<MyBookingsLis
                 listener.onListingItemClick(myBooking);
             }
         });
+
+        holder.myBookingReviewBtn.setOnClickListener(v -> {
+            Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.click_animation);
+            v.startAnimation(animation);
+
+            if (reviewBtnListener != null){
+                reviewBtnListener.onReviewBtnClick(myBooking);
+            }
+        });
     }
 
     @Override
@@ -163,5 +176,9 @@ public class MyBookingsListingAdapter extends RecyclerView.Adapter<MyBookingsLis
 
     public interface OnListingItemClickListener{
         void onListingItemClick(MyBooking myBooking);
+    }
+
+    public interface OnReviewBtnClickListener{
+        void onReviewBtnClick(MyBooking myBooking);
     }
 }
