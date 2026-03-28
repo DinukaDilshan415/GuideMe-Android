@@ -229,17 +229,17 @@
                         android:id="@+id/hosterImage"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        app:shapeAppearanceOverlay="@style/CircleImage"
-                        android:src="@drawable/sample1"
+                        android:background="@drawable/circle_shape"
                         android:scaleType="centerCrop"
-                        android:background="@drawable/circle_shape" />
+                        android:src="@drawable/sample1"
+                        app:shapeAppearanceOverlay="@style/CircleImage" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="8dp">
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/d_partnerName"

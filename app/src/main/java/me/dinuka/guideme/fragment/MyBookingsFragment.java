@@ -187,10 +187,23 @@ public class MyBookingsFragment extends Fragment {
         binding.mybookingsRecyclerView.setLayoutManager(layoutManager);
 
         MyBookingsListingAdapter adapter = new MyBookingsListingAdapter(bookings, myBooking -> {
+
+
+        }, (myBooking -> {
             Bundle bundle = new Bundle();
             bundle.putString("title", myBooking.getName());
+            bundle.putString("image", myBooking.getImages());
+            bundle.putString("location", myBooking.getLocation());
 
-        });
+            AddReviewFragment addReviewFragment = new AddReviewFragment();
+            addReviewFragment.setArguments(bundle);
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, addReviewFragment)
+                    .addToBackStack(null)
+                    .commit();
+
+        }));
 
         binding.mybookingsRecyclerView.setAdapter(adapter);
 
