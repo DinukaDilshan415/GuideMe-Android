@@ -84,7 +84,7 @@ public class MyReservesFragment extends Fragment {
         bookingCall.enqueue(new Callback<List<HashMap<String, Object>>>() {
             @Override
             public void onResponse(Call<List<HashMap<String, Object>>> call, Response<List<HashMap<String, Object>>> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     if (response.code() == 200) {
                         List<HashMap<String, Object>> responseBody = response.body();
 

@@ -49,9 +49,9 @@ public class PartnerNotificationsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         List<Notification> notifications = new ArrayList<>();
-        notifications.add(new Notification(1,"New Booking","Uncover the beauty & diversity of Sri Lanka with a",formater("Sat Mar 14 20:20:00 IST 2026"),"https://a0.muscache.com/im/pictures/Mt/MtTemplate-4829640/original/255e759c-47c9-41df-880a-7817a1d4640c.jpeg?im_w=480"));
-        notifications.add(new Notification(1,"Guide Me Support","he output of the java.util.Date() constructor is a Date object initialized to the current date and time on the system where the code is run",formater("Sat Mar 07 20:20:00 IST 2026"),"https://a0.muscache.com/im/pictures/Mt/MtTemplate-4829640/original/c2d47788-9021-459b-80ed-a0c66c9dd6a2.jpeg?im_w=480"));
-        notifications.add(new Notification(1,"New Booking","Explore Colombo hidden island temple, the city's largest park, ",formater("Sat Mar 14 19:20:00 IST 2026"),"https://a0.muscache.com/im/pictures/Mt/MtTemplate-6942972/original/e5c658ad-38fa-4526-9163-e28ac0232ac5.jpeg?im_w=480"));
+        notifications.add(new Notification(1,"New Booking","Birding in Colombo-Kindly message for any other Birding Hotspots & National Parks",formater("Sat Mar 14 20:20:00 IST 2026"),"https://a0.muscache.com/im/pictures/Mt/MtTemplate-2529014/original/cf2c1e2d-85b6-4938-8a13-0b8bd1ba97d1.jpeg?im_w=960"));
+        notifications.add(new Notification(1,"Guide Me Support","https://github.com/DinukaDilshan415/images/blob/main/logo.png?raw=true",formater("Sat Mar 07 20:20:00 IST 2026"),"https://github.com/DinukaDilshan415/images/blob/main/logo.png?raw=true"));
+        notifications.add(new Notification(1,"New Booking","For the price, it’s great!",formater("Sat Mar 14 19:20:00 IST 2026"),"https://cf.bstatic.com/xdata/images/hotel/max1024x768/679652580.jpg?k=b03105932f297da973667859ba5717136626041e43a4a82cb61994344701646d&o="));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         binding.notificationsRecyclerView.setLayoutManager(layoutManager);
