@@ -32,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 
 public class ListingCategorySelectFragment extends Fragment {
@@ -58,7 +59,6 @@ public class ListingCategorySelectFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         categories = new ArrayList<>();
-        selectedCategory = new MenuCategory();
 
         getActivity().findViewById(R.id.partnerBottomNavigationView).setVisibility(View.GONE);
 
@@ -77,13 +77,19 @@ public class ListingCategorySelectFragment extends Fragment {
                 bundle.putString("categoryName",selectedCategory.getTitle());
                 bundle.putInt("categoryId",selectedCategory.getId());
 
-                CommanListingDetailsFragment fragment = new CommanListingDetailsFragment();
-                fragment.setArguments(bundle);
+                    CommanListingDetailsFragment fragment = new CommanListingDetailsFragment();
+                    fragment.setArguments(bundle);
 
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.partner_fragment_container, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.partner_fragment_container, fragment)
+                            .addToBackStack(null)
+                            .commit();
+
+            }else {
+                new Sweetalert(requireContext(), Sweetalert.WARNING_TYPE)
+                        .setTitleText("Warning")
+                        .setContentText("Select Category")
+                        .show();
             }
         });
 
@@ -122,6 +128,7 @@ public class ListingCategorySelectFragment extends Fragment {
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
                     CategoryChooseAdapter adapter = new CategoryChooseAdapter(categories, (item, position) -> {
+                        selectedCategory = new MenuCategory();
                         selectedCategory.setId(item.getId());
                         selectedCategory.setTitle(item.getTitle());
                         selectedCategory.setIconRes(item.getIconRes());

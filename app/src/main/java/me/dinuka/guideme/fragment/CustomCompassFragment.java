@@ -164,7 +164,6 @@ public class CustomCompassFragment extends DialogFragment implements SensorEvent
     }
 
     private void rotateNeedle(float degrees) {
-        // We rotate the needle in the opposite direction of the phone's heading
         RotateAnimation ra = new RotateAnimation(
                 currentDegree,
                 -degrees,
@@ -175,7 +174,7 @@ public class CustomCompassFragment extends DialogFragment implements SensorEvent
         ra.setFillAfter(true);
 
         compassNeedle.startAnimation(ra);
-        currentDegree = -degrees;
+        currentDegree = degrees;
 
         tvHeading.setText(String.format("%.0f°", degrees));
     }
