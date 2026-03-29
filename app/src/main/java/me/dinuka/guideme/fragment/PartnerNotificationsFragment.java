@@ -50,7 +50,7 @@ public class PartnerNotificationsFragment extends Fragment {
 
         List<Notification> notifications = new ArrayList<>();
         notifications.add(new Notification(1,"New Booking","Birding in Colombo-Kindly message for any other Birding Hotspots & National Parks",formater("Sat Mar 14 20:20:00 IST 2026"),"https://a0.muscache.com/im/pictures/Mt/MtTemplate-2529014/original/cf2c1e2d-85b6-4938-8a13-0b8bd1ba97d1.jpeg?im_w=960"));
-        notifications.add(new Notification(1,"Guide Me Support","https://github.com/DinukaDilshan415/images/blob/main/logo.png?raw=true",formater("Sat Mar 07 20:20:00 IST 2026"),"https://github.com/DinukaDilshan415/images/blob/main/logo.png?raw=true"));
+        notifications.add(new Notification(1,"Guide Me Support","We're reviewing your help request and will get back to you as soon as possible.",formater("Sat Mar 07 20:20:00 IST 2026"),"https://github.com/DinukaDilshan415/images/blob/main/logo.png?raw=true"));
         notifications.add(new Notification(1,"New Booking","For the price, it’s great!",formater("Sat Mar 14 19:20:00 IST 2026"),"https://cf.bstatic.com/xdata/images/hotel/max1024x768/679652580.jpg?k=b03105932f297da973667859ba5717136626041e43a4a82cb61994344701646d&o="));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
