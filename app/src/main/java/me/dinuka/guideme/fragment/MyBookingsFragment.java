@@ -62,7 +62,7 @@ public class MyBookingsFragment extends Fragment {
         ImageView imageView = binding.loadingImage;
 
         Glide.with(this)
-                .load(R.drawable.loadingbuffering) // or R.raw.your_gif_file_name
+                .load(R.drawable.loadingbuffering)
                 .into(imageView);
 
         auth = FirebaseAuth.getInstance();
@@ -77,21 +77,6 @@ public class MyBookingsFragment extends Fragment {
             binding.myBookingsLoggedDesign.setVisibility(View.GONE);
             binding.myBookingsNotLoggedDesign.setVisibility(View.VISIBLE);
         }
-
-//        List<MyBooking> myBookings = new ArrayList<>();
-//        myBookings.add(new MyBooking("#38472384","Room in boutique hotel in Ahangama",45,"Ahangama West, Sri Lanka",4.5,"https://a0.muscache.com/im/pictures/hosting/Hosting-1616481404202153296/original/c8166786-ba76-4847-b7bf-e40af1e50562.jpeg?im_w=1200","3/20/2026","3/20/2026",2,1,"3/20/2026 8:09AM"));
-//        myBookings.add(new MyBooking("#343545","Cozy Upstairs Suite•10 Mins to Airport•Pvt Balcony",74,"Kimbulapitiya Negombo, Sri Lanka",3,"https://a0.muscache.com/im/pictures/hosting/Hosting-667189615689084189/original/9ece141d-d9b4-4903-870d-f9f68254e398.jpeg?im_w=1200","3/20/2026","3/20/2026",2,1,"3/20/2026 8:09AM"));
-//
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-//        binding.mybookingsRecyclerView.setLayoutManager(layoutManager);
-//
-//        MyBookingsListingAdapter adapter = new MyBookingsListingAdapter(myBookings, myBooking -> {
-//            Bundle bundle = new Bundle();
-//            bundle.putString("hotelName", myBooking.getId());
-//
-//        });
-//
-//        binding.mybookingsRecyclerView.setAdapter(adapter);
     }
 
     private void loadMyBookings(String email) {
@@ -110,11 +95,11 @@ public class MyBookingsFragment extends Fragment {
                         int totalItems = responseBody.size();
                         final int[] processedCount = {0};
 
-                        // 1. Create a temporary array or list with a fixed size to maintain order
+
                         MyBooking[] orderedMyBookings = new MyBooking[totalItems];
 
                         for (int i = 0; i < totalItems; i++) {
-                            final int index = i; // Save the current position
+                            final int index = i;
                             HashMap<String, Object> l = responseBody.get(i);
 
                             String imageFolder = "";
@@ -128,7 +113,7 @@ public class MyBookingsFragment extends Fragment {
 
                             storage.getReference(fullPath).getDownloadUrl()
                                     .addOnSuccessListener(uri -> {
-                                        // 2. Place the object in its SPECIFIC original index
+
                                         orderedMyBookings[index] = new MyBooking(
                                                 ((Number) l.get("id")).intValue(),
                                                 l.get("booking_id").toString(),
@@ -165,7 +150,7 @@ public class MyBookingsFragment extends Fragment {
             private void checkAndRefresh(int current, int total, MyBooking[] orderedMyBookings) {
                 if (current == total) {
                     bookings.clear();
-                    // 3. Add all non-null items back to the main list in order
+
                     for (MyBooking item : orderedMyBookings) {
                         if (item != null) bookings.add(item);
                     }

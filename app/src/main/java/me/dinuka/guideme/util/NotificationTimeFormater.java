@@ -9,7 +9,6 @@ public class NotificationTimeFormater {
         long now = System.currentTimeMillis();
         long diff = now - notifiedTimeMs;
 
-        // Time constants in milliseconds
         long SECOND = 1000;
         long MINUTE = 60 * SECOND;
         long HOUR = 60 * MINUTE;
@@ -31,7 +30,6 @@ public class NotificationTimeFormater {
         } else if (diff < 7 * DAY) {
             return (diff / DAY) + " days ago";
         } else {
-            // If older than a week, show the actual date
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
             return sdf.format(new Date(notifiedTimeMs));
         }

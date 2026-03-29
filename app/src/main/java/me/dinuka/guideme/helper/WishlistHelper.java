@@ -22,7 +22,7 @@ public class WishlistHelper {
         SharedPreferences.Editor editor = prefs.edit();
 
         Gson gson = new Gson();
-        String json = gson.toJson(wishlist); // Converts List to String
+        String json = gson.toJson(wishlist);
 
         editor.putString(KEY_WISHLIST, json);
         editor.apply();
@@ -33,19 +33,19 @@ public class WishlistHelper {
         String json = prefs.getString(KEY_WISHLIST, null);
 
         if (json == null) {
-            return new ArrayList<>(); // Return empty list if nothing saved
+            return new ArrayList<>();
         }
 
         Gson gson = new Gson();
         Type type = new TypeToken<List<HashMap<String, Object>>>() {}.getType();
-        return gson.fromJson(json, type); // Converts String back to List
+        return gson.fromJson(json, type);
     }
 
     public static void removeFromWishlist(Context context, String productId) {
-        // 1. Get the current list
+
         List<HashMap<String, Object>> currentList = getWishlist(context);
 
-        // 2. Find and remove the item with the matching ID
+
         for (int i = 0; i < currentList.size(); i++) {
             HashMap<String, Object> item = currentList.get(i);
 
@@ -57,11 +57,10 @@ public class WishlistHelper {
                 currentList.remove(i);
 
                 Toast.makeText(context, "Item removed from wishlist", Toast.LENGTH_SHORT).show();
-                break; // Stop searching once found
+                break;
             }
         }
 
-        // 3. Save the updated list back to SharedPreferences
         saveWishlist(context, currentList);
     }
 
@@ -69,10 +68,8 @@ public class WishlistHelper {
         SharedPreferences prefs = context.getSharedPreferences("wishlist_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        // This removes the key entirely from the phone's storage
         editor.remove("my_wishlist");
 
-        // Use apply() for asynchronous saving (better for UI performance)
         editor.apply();
     }
 }

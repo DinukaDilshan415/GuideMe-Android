@@ -129,13 +129,12 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        // Register the listener
+
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     protected void onPause() {
-        // Unregister to save battery!
         mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
     }

@@ -574,7 +574,7 @@ public class BookingOptionsPickFragment extends Fragment {
         });
 
         binding.rowChildren.btnMinus.setOnClickListener(v -> {
-            if (childCount > 1) { // Prevents going below 1
+            if (childCount > 1) {
                 childCount--;
                 binding.rowChildren.tvCount.setText(String.valueOf(childCount));
             }
@@ -590,7 +590,7 @@ public class BookingOptionsPickFragment extends Fragment {
         });
 
         binding.rowAdults.btnMinus.setOnClickListener(v -> {
-            if (adultCount > 1) { // Prevents going below 1
+            if (adultCount > 1) {
                 adultCount--;
                 binding.rowAdults.tvCount.setText(String.valueOf(adultCount));
             }
@@ -606,7 +606,7 @@ public class BookingOptionsPickFragment extends Fragment {
         });
 
         binding.rowRooms.btnMinus.setOnClickListener(v -> {
-            if (roomCount > 1) { // Prevents going below 1
+            if (roomCount > 1) {
                 roomCount--;
                 binding.rowRooms.tvCount.setText(String.valueOf(roomCount));
             }

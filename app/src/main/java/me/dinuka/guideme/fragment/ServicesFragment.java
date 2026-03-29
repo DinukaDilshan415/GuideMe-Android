@@ -63,7 +63,7 @@ public class ServicesFragment extends Fragment {
         ImageView imageView = binding.loadingImage;
 
         Glide.with(this)
-                .load(R.drawable.loadingbuffering) // or R.raw.your_gif_file_name
+                .load(R.drawable.loadingbuffering)
                 .into(imageView);
 
         loadMainServices("key");
@@ -98,7 +98,7 @@ public class ServicesFragment extends Fragment {
 
                     Tasks.whenAllComplete(tasks).addOnCompleteListener(allTasks -> {
 
-                        services.clear(); // Clear existing list to avoid duplicates
+                        services.clear();
 
                         for (int i = 0; i < responseBody.size(); i++) {
                             HashMap<String, Object> serviceMap = responseBody.get(i);

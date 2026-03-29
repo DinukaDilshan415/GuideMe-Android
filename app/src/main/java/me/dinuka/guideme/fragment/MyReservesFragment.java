@@ -64,7 +64,7 @@ public class MyReservesFragment extends Fragment {
         ImageView imageView = binding.loadingImage;
 
         Glide.with(this)
-                .load(R.drawable.loadingbuffering) // or R.raw.your_gif_file_name
+                .load(R.drawable.loadingbuffering)
                 .into(imageView);
 
         binding.toolbarTitle.setText(listingTitle);

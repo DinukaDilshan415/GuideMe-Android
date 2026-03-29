@@ -49,14 +49,11 @@ public class CategoryChooseAdapter extends RecyclerView.Adapter<CategoryChooseAd
         holder.categoryIcon.setImageResource(item.getIconRes());
         Context context = holder.itemView.getContext();
 
-        // --- SELECTION LOGIC ---
         if (selectedPosition == position) {
-            // Appearance for Selected state
-            holder.cardView.setStrokeColor(ContextCompat.getColor(context, R.color.md_theme_primary)); // Or your primary color
+            holder.cardView.setStrokeColor(ContextCompat.getColor(context, R.color.md_theme_primary));
             holder.cardView.setStrokeWidth(4);
-            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_inverseOnSurface)); // Light blue tint
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_inverseOnSurface));
         } else {
-            // Appearance for Unselected state
             holder.cardView.setStrokeColor(Color.parseColor("#E0E0E0"));
             holder.cardView.setStrokeWidth(1);
             holder.cardView.setCardBackgroundColor(Color.WHITE);
@@ -65,8 +62,6 @@ public class CategoryChooseAdapter extends RecyclerView.Adapter<CategoryChooseAd
         holder.itemView.setOnClickListener(v -> {
             int previousPosition = selectedPosition;
             selectedPosition = holder.getAdapterPosition();
-
-            // Refresh only the items that changed for better performance
             notifyItemChanged(previousPosition);
             notifyItemChanged(selectedPosition);
 

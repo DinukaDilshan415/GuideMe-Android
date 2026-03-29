@@ -387,7 +387,7 @@ public class ThingsToDoBookingOptionsPickFragment extends Fragment {
         });
 
         binding.rowGuests.btnMinus.setOnClickListener(v -> {
-            if (guestsCount > 1) { // Prevents going below 1
+            if (guestsCount > 1) {
                 guestsCount--;
                 binding.rowGuests.tvCount.setText(String.valueOf(guestsCount));
             }

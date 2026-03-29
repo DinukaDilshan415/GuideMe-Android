@@ -117,8 +117,6 @@ public class PartnerLoginActivity extends AppCompatActivity {
                                                         .setTitleText("Warning")
                                                         .setContentText("Incorrect Email Or Passowrd")
                                                         .show();
-//                                Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-//                                updateUI(null);
                                             }
                                         }
                                     });

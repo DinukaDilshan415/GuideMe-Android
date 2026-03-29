@@ -27,7 +27,7 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private boolean lastMagnetometerSet = false;
 
     private float currentDegree = 0f;
-    static final float ALPHA = 0.12f; // Smoothing factor (0.1 to 0.2 is ideal)
+    static final float ALPHA = 0.12f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,6 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     }
 
     private void rotateNeedle(float degrees) {
-        // We rotate the needle in the opposite direction of the phone's heading
         RotateAnimation ra = new RotateAnimation(
                 currentDegree,
                 -degrees,

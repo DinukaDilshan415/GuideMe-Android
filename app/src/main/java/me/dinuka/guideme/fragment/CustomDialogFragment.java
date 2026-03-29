@@ -104,13 +104,13 @@ public class CustomDialogFragment extends DialogFragment implements OnMapReadyCa
     @Override
     public void onStart() {
         super.onStart();
-        // FORCE the size and center position here
+
         if (getDialog() != null && getDialog().getWindow() != null) {
             Window window = getDialog().getWindow();
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
             WindowManager.LayoutParams lp = window.getAttributes();
-            // Set custom width (90%) and height (70%)
+
             lp.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
             lp.height = (int) (getResources().getDisplayMetrics().heightPixels * 0.85);
             lp.gravity = Gravity.CENTER;
@@ -134,7 +134,7 @@ public class CustomDialogFragment extends DialogFragment implements OnMapReadyCa
 
         enableMyLocation();
 
-        // Handle "My Location" button click
+
         mMap.setOnMyLocationButtonClickListener(() -> {
             if (currentLocation != null) {
                 updateMarkerAndResult(currentLocation);
