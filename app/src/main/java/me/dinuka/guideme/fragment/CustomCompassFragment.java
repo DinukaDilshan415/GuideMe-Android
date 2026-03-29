@@ -71,7 +71,7 @@ public class CustomCompassFragment extends DialogFragment implements SensorEvent
     private boolean lastMagnetometerSet = false;
 
     private float currentDegree = 0f;
-    static final float ALPHA = 0.12f; // Smoothing factor (0.1 to 0.2 is ideal)
+    static final float ALPHA = 0.12f;
 
     public CustomCompassFragment() {
 
@@ -106,13 +106,13 @@ public class CustomCompassFragment extends DialogFragment implements SensorEvent
     @Override
     public void onStart() {
         super.onStart();
-        // FORCE the size and center position here
+
         if (getDialog() != null && getDialog().getWindow() != null) {
             Window window = getDialog().getWindow();
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
             WindowManager.LayoutParams lp = window.getAttributes();
-            // Set custom width (90%) and height (70%)
+
             lp.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
             lp.height = (int) (getResources().getDisplayMetrics().heightPixels * 0.60);
             lp.gravity = Gravity.CENTER;

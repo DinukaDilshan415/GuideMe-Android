@@ -61,7 +61,7 @@ public class ThingsToDoFragment extends Fragment {
         ImageView imageView = binding.loadingImage;
 
         Glide.with(this)
-                .load(R.drawable.loadingbuffering) // or R.raw.your_gif_file_name
+                .load(R.drawable.loadingbuffering)
                 .into(imageView);
 
         loadMainThingsToDo("key");
@@ -96,7 +96,7 @@ public class ThingsToDoFragment extends Fragment {
 
                     Tasks.whenAllComplete(tasks).addOnCompleteListener(allTasks -> {
 
-                        thingstodo.clear(); // Clear existing list to avoid duplicates
+                        thingstodo.clear();
 
                         for (int i = 0; i < responseBody.size(); i++) {
                             HashMap<String, Object> thingsToDoMap = responseBody.get(i);

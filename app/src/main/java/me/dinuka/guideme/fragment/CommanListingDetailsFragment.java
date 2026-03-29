@@ -105,25 +105,25 @@ public class CommanListingDetailsFragment extends Fragment implements OnMapReady
 
         descriptionEditorCreate();
 
-        // Setup RecyclerView
+
         recyclerView = binding.recyclerPreviews;
         adapter = new SelectedImagesAdapter(selectedImages, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
 
-        // Setup Gallery Launcher
+
         ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         if (result.getData().getClipData() != null) {
-                            // Multiple images selected
+
                             int count = result.getData().getClipData().getItemCount();
                             for (int i = 0; i < count; i++) {
                                 selectedImages.add(result.getData().getClipData().getItemAt(i).getUri());
                             }
                         } else if (result.getData().getData() != null) {
-                            // Single image selected
+
                             selectedImages.add(result.getData().getData());
                         }
 
@@ -133,7 +133,7 @@ public class CommanListingDetailsFragment extends Fragment implements OnMapReady
                 }
         );
 
-        // Button to trigger selection
+
         binding.btnPickImages.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
@@ -153,14 +153,6 @@ public class CommanListingDetailsFragment extends Fragment implements OnMapReady
             String htmlDescription = mEditor.getHtml();
             String address = binding.listngAddress.getText().toString().trim();
             String price = binding.listingPrice.getText().toString().trim();
-
-//            Log.d("TITLE", title);
-//            Log.d("HTML", htmlDescription);
-//            Log.d("ADDRESS", address);
-//            Log.d("PRICE", price);
-//            Log.d("LATITUDE", String.valueOf(latitude));
-//            Log.d("LONGITUDE", String.valueOf(longitude));
-//            Log.d("LOCATION", locationName);
 
             if (title.isEmpty()){
                 binding.listingTitle.setError("Title is required");
@@ -384,7 +376,6 @@ public class CommanListingDetailsFragment extends Fragment implements OnMapReady
             return true;
         }
 
-        // Convert HTML to plain text to strip tags like <p> or <br>
         String plainText;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             plainText = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString();
@@ -392,7 +383,6 @@ public class CommanListingDetailsFragment extends Fragment implements OnMapReady
             plainText = Html.fromHtml(html).toString();
         }
 
-        // Check if the actual text (without tags) is empty
         return plainText.trim().isEmpty();
     }
 }

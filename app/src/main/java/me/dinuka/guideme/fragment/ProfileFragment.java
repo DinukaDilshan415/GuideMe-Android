@@ -208,7 +208,7 @@ public class ProfileFragment extends Fragment {
         mAuth.signOut();
 
         CredentialManager credentialManager = CredentialManager.create(getContext());
-        // When a user signs out, clear the current user credential state from all credential providers.
+
         ClearCredentialStateRequest clearRequest = new ClearCredentialStateRequest();
         credentialManager.clearCredentialStateAsync(
                 clearRequest,

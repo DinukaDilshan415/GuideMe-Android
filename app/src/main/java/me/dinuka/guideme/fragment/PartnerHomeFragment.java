@@ -76,7 +76,7 @@ public class PartnerHomeFragment extends Fragment {
         ImageView imageView = binding.loadingImage;
 
         Glide.with(this)
-                .load(R.drawable.loadingbuffering) // or R.raw.your_gif_file_name
+                .load(R.drawable.loadingbuffering)
                 .into(imageView);
 
         loadPartnerListings(firebaseAuth.getCurrentUser().getEmail());
@@ -110,11 +110,11 @@ public class PartnerHomeFragment extends Fragment {
                     int totalItems = responseBody.size();
                     final int[] processedCount = {0};
 
-                    // 1. Create a temporary array or list with a fixed size to maintain order
+
                     Listing[] orderedListings = new Listing[totalItems];
 
                     for (int i = 0; i < totalItems; i++) {
-                        final int index = i; // Save the current position
+                        final int index = i;
                         HashMap<String, Object> l = responseBody.get(i);
 
                         String imageFolder = "";
@@ -128,7 +128,7 @@ public class PartnerHomeFragment extends Fragment {
 
                         storage.getReference(fullPath).getDownloadUrl()
                                 .addOnSuccessListener(uri -> {
-                                    // 2. Place the object in its SPECIFIC original index
+
                                     orderedListings[index] = new Listing(
                                             ((Number) l.get("id")).intValue(),
                                             l.get("list_id").toString(),
@@ -154,7 +154,7 @@ public class PartnerHomeFragment extends Fragment {
             private void checkAndRefresh(int current, int total, Listing[] orderedListings) {
                 if (current == total) {
                     listings.clear();
-                    // 3. Add all non-null items back to the main list in order
+
                     for (Listing item : orderedListings) {
                         if (item != null) listings.add(item);
                     }

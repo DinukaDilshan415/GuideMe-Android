@@ -67,7 +67,7 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
         pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
             if (uri != null) {
                 selectedUri = uri;
-                // This is the URI of the image the user selected
+
                 binding.profileImage.setImageURI(uri);
 
                 Log.d("PhotoPicker", "Selected URI: " + uri);
@@ -273,7 +273,7 @@ public class EditProfileSheet extends BottomSheetDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null; // Prevent memory leaks
+        binding = null;
     }
 
     @Override

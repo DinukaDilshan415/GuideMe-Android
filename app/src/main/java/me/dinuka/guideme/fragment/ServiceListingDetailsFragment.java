@@ -87,7 +87,7 @@ public class ServiceListingDetailsFragment extends Fragment {
             if (!name.isEmpty()) {
                 qualifications.add(name);
                 adapter.notifyItemInserted(qualifications.size() - 1);
-                qualificationsInput.setText(""); // Clear input
+                qualificationsInput.setText("");
                 updateQualificationsVisibility();
             }
         });
@@ -145,7 +145,7 @@ public class ServiceListingDetailsFragment extends Fragment {
                         Log.e("ServiceListingDetailsFragment", "Error uploading image", e);
 
                         processedCount[0]++;
-                        // We still increment even on failure so the process can finish
+
                         if (processedCount[0] == totalImages) {
                             sendDataToRetrofit(email, pDialog);
                         }

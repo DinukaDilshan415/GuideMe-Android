@@ -110,7 +110,7 @@ public class HotelListingDetailsFragment extends Fragment {
             if (!name.isEmpty()) {
                 roomTypes.add(name);
                 roomAdapter.notifyItemInserted(roomTypes.size() - 1);
-                etRoomInput.setText(""); // Clear input
+                etRoomInput.setText("");
                 updateRoomVisibility();
             }
         });
@@ -122,20 +122,6 @@ public class HotelListingDetailsFragment extends Fragment {
             for (Facility f : facilityList) {
                 if (f.isSelected()) selectedFacilities.add(f.getId());
             }
-
-//            Log.i("HotelListingDetailsFragment", "title: " + commanListingData.get("title"));
-//            Log.i("HotelListingDetailsFragment", "description: " + commanListingData.get("description"));
-//            Log.i("HotelListingDetailsFragment", "address: " + commanListingData.get("address"));
-//            Log.i("HotelListingDetailsFragment", "price: " + commanListingData.get("price"));
-//            Log.i("HotelListingDetailsFragment", "latitude: " + commanListingData.get("latitude"));
-//            Log.i("HotelListingDetailsFragment", "longitude: " + commanListingData.get("longitude"));
-//            Log.i("HotelListingDetailsFragment", "locationName: " + commanListingData.get("locationName"));
-//            Log.i("HotelListingDetailsFragment", "categoryName: " + commanListingData.get("categoryName"));
-//            Log.i("HotelListingDetailsFragment", "categoryId: " + commanListingData.get("categoryId"));
-//
-//            for (Object image : (List<Object>) commanListingData.get("images")) {
-//                Log.i("HotelListingDetailsFragment", "image: " + image.toString());
-//            }
 
             if (adultCount < 1){
                 adultCount = 1;
@@ -200,7 +186,7 @@ public class HotelListingDetailsFragment extends Fragment {
                         Log.e("HotelListingDetailsFragment", "Error uploading image", e);
 
                         processedCount[0]++;
-                        // We still increment even on failure so the process can finish
+
                         if (processedCount[0] == totalImages) {
                             sendDataToRetrofit(email, pDialog);
                         }
@@ -288,12 +274,6 @@ public class HotelListingDetailsFragment extends Fragment {
                 Log.e("HotelListingDetailsFragment", "Error fetching facilities", t);
             }
         });
-
-//        facilityList.add(new Facility(0, "Swimming Pool", R.drawable.pool_24px, false));
-//        facilityList.add(new Facility(1, "Gym", R.drawable.fitness_center_24px, false));
-//        facilityList.add(new Facility(2, "Spa", R.drawable.spa_24px, false));
-//        facilityList.add(new Facility(3, "Restaurant", R.drawable.restaurant_24px, false));
-//        facilityList.add(new Facility(4, "Bar", R.drawable.local_bar_24px, false));
 
         FacilitySelectAdapter adapter = new FacilitySelectAdapter(facilityList);
         binding.facilitySelectRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));

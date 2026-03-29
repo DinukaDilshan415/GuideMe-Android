@@ -40,9 +40,9 @@ public class FacilitySelectAdapter extends RecyclerView.Adapter<FacilitySelectAd
         holder.icon.setImageResource(item.getIconRes());
 
         if (item.isSelected()) {
-            holder.card.setStrokeColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_primary)); // Or your primary color
+            holder.card.setStrokeColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_primary));
             holder.card.setStrokeWidth(4);
-            holder.card.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_inverseOnSurface)); // Light blue tint
+            holder.card.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_inverseOnSurface));
         } else {
             holder.card.setStrokeColor(Color.parseColor("#E0E0E0"));
             holder.card.setStrokeWidth(1);

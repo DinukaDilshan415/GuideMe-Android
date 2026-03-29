@@ -72,7 +72,7 @@ public class PartnerNotificationsFragment extends Fragment {
         try {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .appendPattern("EEE MMM dd HH:mm:ss ")
-                    .appendZoneText(java.time.format.TextStyle.SHORT) // Handles "IST"
+                    .appendZoneText(java.time.format.TextStyle.SHORT)
                     .appendPattern(" yyyy")
                     .toFormatter(Locale.ENGLISH);
 

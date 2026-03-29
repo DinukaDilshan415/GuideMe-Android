@@ -19,9 +19,9 @@ import androidx.credentials.GetCredentialRequest;
 import androidx.credentials.GetCredentialResponse;
 import androidx.credentials.exceptions.GetCredentialException;
 
-import androidx.credentials.CredentialManagerCallback; // The correct one
+import androidx.credentials.CredentialManagerCallback;
 
-import java.util.concurrent.Executors; // To handle the background task
+import java.util.concurrent.Executors;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +29,6 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -142,8 +141,6 @@ public class LoginActivity extends AppCompatActivity {
                                                         .setTitleText("Warning")
                                                         .setContentText("Incorrect Email Or Passowrd")
                                                         .show();
-//                                Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-//                                updateUI(null);
                                             }
                                         }
                                     });
@@ -168,8 +165,8 @@ public class LoginActivity extends AppCompatActivity {
             credentialManager.getCredentialAsync(
                     this,
                     request,
-                    null, // CancellationSignal
-                    Executors.newSingleThreadExecutor(), // The library needs an Executor in Java
+                    null,
+                    Executors.newSingleThreadExecutor(),
                     new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
                         @Override
                         public void onResult(GetCredentialResponse result) {
@@ -193,7 +190,6 @@ public class LoginActivity extends AppCompatActivity {
             String idToken = googleIdToken.getIdToken();
             String email = googleIdToken.getId();
 
-            // Successfully signed in! Navigate to GuideMe Home Screen
             Log.d("Auth", "Welcome " + email);
 
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
