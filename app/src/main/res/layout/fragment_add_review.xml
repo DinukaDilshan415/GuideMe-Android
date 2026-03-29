@@ -191,6 +191,7 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/addReviewBtn"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginHorizontal="20dp"

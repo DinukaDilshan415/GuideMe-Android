@@ -176,6 +176,7 @@ public class MyBookingsFragment extends Fragment {
 
         }, (myBooking -> {
             Bundle bundle = new Bundle();
+            bundle.putInt("bookingId", myBooking.getId());
             bundle.putString("title", myBooking.getName());
             bundle.putString("image", myBooking.getImages());
             bundle.putString("location", myBooking.getLocation());

@@ -42,6 +42,7 @@ import retrofit2.Retrofit;
 public class ServicesFragment extends Fragment {
 
     private FragmentServicesBinding binding;
+    private String TAG = this.getClass().getSimpleName();
     List<Service> services = new ArrayList<>();
 
     @Override
