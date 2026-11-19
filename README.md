@@ -209,5 +209,3 @@ All paths are relative to `BASE_URL`.
 - GitHub: [@DinukaDilshan415](https://github.com/DinukaDilshan415)
 
 ---
-
-<p align="center">Built with ☕ and Java for travellers.</p>
