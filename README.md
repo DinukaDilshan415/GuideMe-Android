@@ -58,7 +58,7 @@ GuideMe is a travel and tourism app for Android. Travellers use it to find and b
 
 | Splash | Home | Listing details | Booking |
 |:---:|:---:|:---:|:---:|
-| <img src="screenshots/splash.png" width="200"/> | <img src="screenshots/home.png" width="200"/> | <img src="screenshots/details.png" width="200"/> | <img src="screenshots/booking.png" width="200"/> |
+| <img src="https://media.licdn.com/dms/image/v2/D5622AQHFIHntyoEBjg/feedshare-shrink_800/B56aF5RtdwKoAo-/0/1793036048478?e=1796860800&v=beta&t=FK9JbycQ4YLahutlSiwdot2Y17d--Vv34A40OAMiXlc" width="200"/> | <img src="https://media.licdn.com/dms/image/v2/D5622AQG8GBiMXMO49g/feedshare-shrink_800/B56aF5RuNNJkAg-/0/1793036051525?e=1796860800&v=beta&t=XMychZNPGwf0E4LQ9fdW5B2Gasf8Pmk5YdphfULQ19U" width="200"/> | <img src="https://media.licdn.com/dms/image/v2/D5622AQHiGRj8C2RH6g/feedshare-shrink_800/B56aF5RuPqJMAk-/0/1793036051761?e=1796860800&v=beta&t=cNynbzRBDfioMXm5D83vYlv1CON-clRXfL7n3SSn8m4" width="200"/> | <img src="https://media.licdn.com/dms/image/v2/D5622AQG26RQwZK1Rwg/feedshare-shrink_800/B56aF5RuAqHQAc-/0/1793036050777?e=1796860800&v=beta&t=TnJlk37BOTm0N46c17HWfEgKlReS3_e9K2S4eQNuArA" width="200"/> |
 
 ---
 
