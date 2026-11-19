@@ -283,8 +283,8 @@ public class BookingOptionsPickFragment extends Fragment {
         InitRequest req = new InitRequest();
         req.setSandBox(true);
 
-        req.setMerchantId("1223992");
-        req.setMerchantSecret("MzU4NTA0NTMxNzc3NjE0NDU0OTQyNDgyNzgyMTIyMDEwMzYxMzkx");
+        req.setMerchantId("");
+        req.setMerchantSecret("");
         req.setCurrency("USD");
         req.setAmount(bookingFee);
         req.setOrderId("GM-" + System.currentTimeMillis());
